@@ -1,0 +1,78 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+library(ggformula)
+library(R2jags)
+library(CalvinBayes)
+```
+# CalvinBayes
+
+The goal of CalvinBayes is to collect up some data sets and utilities for 
+learning/teaching Bayesian Data analysis.
+
+## Installation
+
+### Github
+
+You can install the development version of CalvinBayes from GitHub with
+
+``` r
+devtools::install_github("rpruim/CalvinBayes")
+```
+
+<!-- ### CRAN -->
+
+<!-- You can install the released version of CalvinBayes from [CRAN](https://CRAN.R-project.org) with: -->
+
+<!-- ``` r -->
+<!-- install.packages("CalvinBayes") -->
+<!-- ``` -->
+
+## Example
+
+Here is an example that demonstrates the use of the `posterior()` function to extract 
+a posterior distribution from an object fit using the R2jags package.
+
+```{r example-1a}
+library(R2jags)
+library(CalvinBayes)
+data("z15N50")
+glimpse(z15N50)
+```
+
+```{r example-1b}
+# describe the model
+bern_model <- function() {
+  for (i in 1:N) {
+    # each response is Bernoulli with fixed parameter theta
+    y[i] ~ dbern(theta)  
+  }
+  theta ~ dbeta(1, 1)    # prior for theta
+}
+```
+
+```{r example-1c}
+# Fit the model
+bern_jags <- 
+  jags(
+    data = list(y = z15N50$y, N = nrow(z15N50)),
+    model.file = bern_model,
+    parameters.to.save = c("theta")
+  )
+```
+
+```{r example-1d}
+glimpse(posterior(bern_jags))
+library(ggformula)
+gf_density(~ theta, data = posterior(bern_jags))
+```
