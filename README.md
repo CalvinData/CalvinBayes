@@ -10,14 +10,16 @@ for learning/teaching Bayesian Data analysis.
 
 ### Github
 
-You can install the development version of CalvinBayes from GitHub
-with
+You can install the development version of CalvinBayes from GitHub with
 
 ``` r
 devtools::install_github("rpruim/CalvinBayes")
 ```
 
-<!-- ### CRAN -->
+### CRAN
+
+This package is not on
+CRAN.
 
 <!-- You can install the released version of CalvinBayes from [CRAN](https://CRAN.R-project.org) with: -->
 
@@ -30,8 +32,8 @@ devtools::install_github("rpruim/CalvinBayes")
 ## Example
 
 Here is an example that demonstrates the use of the `posterior()`
-function to extract a posterior distribution from an object fit using
-the R2jags package.
+function to extract isamples from the posterior distribution of an
+object fit using the R2jags package.
 
 ``` r
 library(R2jags)
@@ -78,8 +80,8 @@ bern_jags <-
 glimpse(posterior(bern_jags))
 #> Observations: 3,000
 #> Variables: 2
-#> $ deviance <dbl> 61.30080, 62.22385, 61.76484, 61.43222, 61.49533, 61.13…
-#> $ theta    <dbl> 0.2705942, 0.3717709, 0.2485877, 0.2628710, 0.2597238, …
+#> $ deviance <dbl> 61.15448, 63.39155, 61.29829, 61.09542, 61.21761, 61.49…
+#> $ theta    <dbl> 0.3170819, 0.4034269, 0.2707632, 0.3061688, 0.2768908, …
 library(ggformula)
 gf_density(~ theta, data = posterior(bern_jags))
 ```

@@ -30,7 +30,9 @@ You can install the development version of CalvinBayes from GitHub with
 devtools::install_github("rpruim/CalvinBayes")
 ```
 
-<!-- ### CRAN -->
+### CRAN
+
+This package is not on CRAN.
 
 <!-- You can install the released version of CalvinBayes from [CRAN](https://CRAN.R-project.org) with: -->
 
@@ -41,7 +43,7 @@ devtools::install_github("rpruim/CalvinBayes")
 ## Example
 
 Here is an example that demonstrates the use of the `posterior()` function to extract 
-a posterior distribution from an object fit using the R2jags package.
+isamples from the posterior distribution of an object fit using the R2jags package.
 
 ```{r example-1a}
 library(R2jags)
