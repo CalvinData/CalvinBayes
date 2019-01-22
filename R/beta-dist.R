@@ -19,14 +19,14 @@
 #' @importFrom ggplot2 geom_segment labs
 #' @export
 #' @examples
-#' betaParams(10, 5)
-#' betaParams(mean = 0.8, concentration = 10)
-#' betaParams(mean = 0.8, k = 10)
-#' betaParams(mode = 0.8, concentration = 10)
-#' betaParams(mode = 0.8, k = 10)
-#' betaParams(mode = 0.8, k = 10, plot = TRUE, color = "red")
+#' beta_params(10, 5)
+#' beta_params(mean = 0.8, concentration = 10)
+#' beta_params(mean = 0.8, k = 10)
+#' beta_params(mode = 0.8, concentration = 10)
+#' beta_params(mode = 0.8, k = 10)
+#' beta_params(mode = 0.8, k = 10, plot = TRUE, color = "red")
 
-betaParams <-
+beta_params <-
   function(shape1 = NULL,
            shape2 = NULL,
            mean = NULL, sd = NULL,

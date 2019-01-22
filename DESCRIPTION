@@ -17,7 +17,8 @@ Imports:
     rjags,
     runjags,
     R2jags,
-    coda
+    coda,
+    brms
 Suggests:
     bayesplot,
     testthat
