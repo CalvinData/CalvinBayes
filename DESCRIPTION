@@ -13,6 +13,7 @@ Depends:
     dplyr,
     ggformula
 Imports:
+    ggplot2,
     rjags,
     runjags,
     R2jags,
