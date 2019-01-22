@@ -2,14 +2,21 @@
 % Please edit documentation in R/posterior.R
 \name{posterior}
 \alias{posterior}
+\alias{posterior.rjags}
+\alias{posterior.brmsfit}
 \title{Extract posterior samples as a tidy data frame}
 \usage{
 posterior(object, ...)
+
+\method{posterior}{rjags}(object, ...)
+
+\method{posterior}{brmsfit}(object, ...)
 }
 \arguments{
 \item{object}{An object produced by a bayesian fitting function like
 \code{\link[R2jags:jags]{R2jags::jags()}}.}
 }
 \description{
-Extract posterior samples as a tidy data frame
+\code{posterior()} is a generic funtion.
+See usage for a list of object classes for which methods exist.
 }
