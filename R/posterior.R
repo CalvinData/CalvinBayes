@@ -16,3 +16,12 @@ posterior <- function(object, ...) {
 posterior.rjags <- function(object, ...) {
   as.data.frame(object$BUGSoutput$sims.list)
 }
+
+#' #' @export
+#'
+#' coda.samples.rjags <-
+#'   function(model, variable.names = NULL, n.iter,
+#'            thin = 1, na.rm = TRUE, ...) {
+#'     as.mcmc(model, thin = thin, end = n.iter
+#'   }
+
