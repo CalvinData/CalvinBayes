@@ -27,6 +27,16 @@ posterior.brmsfit <- function(object, ...) {
   brmsfit::posterior_samples(object, ...)
 }
 
+#' @export
+posterior.data.frame <- function(object, n = 5000, posterior = "posterior",
+                                 remove = c("likelihood", "loglik", "prior",
+                                            "loglikelihood")) {
+
+  prob <- object[[posterior]]
+  idx <- base::sample(1:nrow(object), size = n, replace = TRUE, prob = prob)
+  object[idx, setdiff(names(object), union(posterior, remove)), drop = FALSE]
+}
+
 #' #' @export
 #'
 #' coda.samples.rjags <-
