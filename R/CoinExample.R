@@ -20,15 +20,21 @@
 #'   spaced grid of `resolution + 1` values from 0 to 1.
 #' @param ... additional arguments passed to the geom.
 #'
-#' @importFrom dplyr tibble
+#' @importFrom dplyr tibble filter
 #' @importFrom ggplot2 labs facet_wrap
 #' @export
 #' @examples
 #' CoinExample("HHTTH", geom = geom_col, p = seq(0, 1, by = 0.25), results = "data")
+#' CoinExample("HHTTH",
+#'   p = seq(0, 1, by = 0.25), prior = c(.1, .2 , .4, .2, .1),
+#'   geom = geom_col, alpha = 0.5)
 #' CoinExample("HHTTH", geom = geom_col, p = seq(0, 1, by = 0.25), steps = TRUE, results = "data")
 #' CoinExample("HHTTH", p = seq(0, 1, by = 0.25), alpha = 0.9, steps = TRUE)
+#' CoinExample("HHTTH", p = seq(0, 1, by = 0.25), alpha = 0.5, steps = TRUE,
+#'   geom = geom_col, filter = n %in% c(4,5))
 #' CoinExample("HHTTHTHHTHHH", alpha = 0.9, steps = TRUE)
 #' CoinExample("HHTTHTHHTHHH", alpha = 0.9, steps = TRUE)
+#' CoinExample("HHTTHTHHTHHH", alpha = 0.9, steps = TRUE, filter = n %in% c(1, 5, 10))
 #' CoinExample("HHHHHHHHHHHH", alpha = 0.9)
 #' CoinExample("HHHHHHHHHHHH", alpha = 0.9, steps = TRUE)
 
@@ -41,9 +47,11 @@ CoinExample <-
            geom = geom_line,
            alpha = 0.7,
            resolution = 100,
+           filter = TRUE,
            ...) {
     results = match.arg(results)
     probs = p  # force p to be evaluated in case it is determined by n
+    filter <- enquo(filter)
 
     if (is.factor(data)) {
       data <- 2 - as.numeric(factor(data))
@@ -63,19 +71,30 @@ CoinExample <-
     if (steps) {
       Grid <-
         base::Reduce(c, data, accumulate = TRUE) %>%
-        base::lapply(CoinExample, p = probs, results = "data", accumulate = FALSE) %>%
-        dplyr::bind_rows()
+        base::lapply(CoinExample, p = probs, results = "data", accumulate = TRUE) %>%
+        dplyr::bind_rows() %>%
+        dplyr::filter( !! filter) %>%
+        group_by(p) %>%
+        arrange(p, n) %>%
+        dplyr::mutate(
+          prior = ifelse(is.na(lag(posterior)), prior, lag(posterior))
+        ) %>%
+        ungroup() %>%
+        arrange(n, p)
     } else {
       Grid <- dplyr::tibble(p = probs) %>%
         dplyr::mutate(
-          prior_paths = prior,
-          prior = prior_paths / sum(prior_paths),
+          # prior_paths = prior,
+          prior0 = prior,  # used to make sure prior is replicated to correct length when a constant
+          prior = prior0 / sum(prior0),
           likelihood0 = dbinom(sum(head(data, -1)), size = length(data)-1, prob = probs),
           likelihood = dbinom(sum(data), size = length(data), prob = probs),
-          paths0 = prior_paths * likelihood0 * 4^(length(data) - 1),
-          paths = prior_paths * likelihood * 4^length(data),
-          posterior0 = paths0 / sum(paths0),
-          posterior = paths / sum(paths),
+          # paths0 = prior_paths * likelihood0 * 4^(length(data) - 1),
+          # paths = prior_paths * likelihood * 4^length(data),
+          # posterior0 = paths0 / sum(paths0),
+          # posterior = paths / sum(paths),
+          posterior0 = prior * likelihood,
+          posterior = posterior0 / sum(posterior0),
           d = paste(data, collapse = ""),
           n = length(data)
         ) %>%
@@ -87,8 +106,10 @@ CoinExample <-
     res <-
       base::suppressWarnings(
         ggplot2::ggplot(Grid) +
-          geom(aes(x = p, y = prior, color = "prior", fill = "prior"), size = 1.5, alpha = 0.7) +
-          geom(aes(x = p, y = posterior, color = "posterior", fill = "posterior")) +
+          geom(aes(x = p, y = prior, color = "prior", fill = "prior"),
+               alpha = alpha, ...) +
+          geom(aes(x = p, y = posterior, color = "posterior", fill = "posterior"),
+               alpha = alpha, ...) +
           ggplot2::scale_color_manual(values = c("posterior" = "steelblue", "prior" = "gray60")) +
           ggplot2::scale_fill_manual(values = c("posterior" = "steelblue", "prior" = "gray60"))
       )

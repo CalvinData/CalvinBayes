@@ -6,7 +6,8 @@
 \usage{
 CoinExample(data = "HHTT", p = seq(0, 1, length.out = resolution + 1),
   prior = 1, results = c("plot", "data"), steps = FALSE,
-  geom = geom_line, alpha = 0.7, resolution = 100, ...)
+  geom = geom_line, alpha = 0.7, resolution = 100, filter = TRUE,
+  ...)
 }
 \arguments{
 \item{data}{a vector of 0's and 1's or a character string with two characters representing
@@ -40,10 +41,16 @@ the results Bayesian updating.
 }
 \examples{
 CoinExample("HHTTH", geom = geom_col, p = seq(0, 1, by = 0.25), results = "data")
+CoinExample("HHTTH",
+  p = seq(0, 1, by = 0.25), prior = c(.1, .2 , .4, .2, .1),
+  geom = geom_col, alpha = 0.5)
 CoinExample("HHTTH", geom = geom_col, p = seq(0, 1, by = 0.25), steps = TRUE, results = "data")
 CoinExample("HHTTH", p = seq(0, 1, by = 0.25), alpha = 0.9, steps = TRUE)
+CoinExample("HHTTH", p = seq(0, 1, by = 0.25), alpha = 0.5, steps = TRUE,
+  geom = geom_col, filter = n \%in\% c(4,5))
 CoinExample("HHTTHTHHTHHH", alpha = 0.9, steps = TRUE)
 CoinExample("HHTTHTHHTHHH", alpha = 0.9, steps = TRUE)
+CoinExample("HHTTHTHHTHHH", alpha = 0.9, steps = TRUE, filter = n \%in\% c(1, 5, 10))
 CoinExample("HHHHHHHHHHHH", alpha = 0.9)
 CoinExample("HHHHHHHHHHHH", alpha = 0.9, steps = TRUE)
 }
