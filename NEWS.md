@@ -1,5 +1,6 @@
 # CalvinBayes 0.1.0
 
+* Added PropExample() for doing black-box bayesian updating of a Bernoulli model
 * Added `posterior()` generic and methods for generating tidy data frame of posterior
     samples.
 * Added `beta_params()` to aid in reparameterizing beta distributions.

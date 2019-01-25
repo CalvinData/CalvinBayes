@@ -1,7 +1,9 @@
 #' Example: Bayesian inference of a proportion
 #'
 #' This intended as a black-box example with a small data set to illustrate
-#' the results Bayesian updating.
+#' the results of Bayesian updating.  The model is a Bernoulli model with
+#' fixed proportion over all tosses of the coin.  Prior, data, and grid resolution
+#' can be supplied by the user. See examples.
 #'
 #' @param data a vector of 0's and 1's or a character string with two characters representing
 #'   success/failure or head/tails from the bernoulli experiment.
@@ -24,21 +26,25 @@
 #' @importFrom ggplot2 labs facet_wrap
 #' @export
 #' @examples
-#' CoinExample("HHTTH", geom = geom_col, p = seq(0, 1, by = 0.25), results = "data")
-#' CoinExample("HHTTH",
+#' PropExample("HHTTH", geom = geom_col, p = seq(0, 1, by = 0.25), results = "data")
+#' PropExample("HHTTH",
 #'   p = seq(0, 1, by = 0.25), prior = c(.1, .2 , .4, .2, .1),
 #'   geom = geom_col, alpha = 0.5)
-#' CoinExample("HHTTH", geom = geom_col, p = seq(0, 1, by = 0.25), steps = TRUE, results = "data")
-#' CoinExample("HHTTH", p = seq(0, 1, by = 0.25), alpha = 0.9, steps = TRUE)
-#' CoinExample("HHTTH", p = seq(0, 1, by = 0.25), alpha = 0.5, steps = TRUE,
+#' PropExample("SSFFS", geom = geom_col, p = seq(0, 1, by = 0.25), steps = TRUE, results = "data")
+#' PropExample("SSFFS", p = seq(0, 1, by = 0.25), alpha = 0.9, steps = TRUE)
+#' PropExample("SSFFS", p = seq(0, 1, by = 0.25), alpha = 0.5, steps = TRUE,
 #'   geom = geom_col, filter = n %in% c(4,5))
-#' CoinExample("HHTTHTHHTHHH", alpha = 0.9, steps = TRUE)
-#' CoinExample("HHTTHTHHTHHH", alpha = 0.9, steps = TRUE)
-#' CoinExample("HHTTHTHHTHHH", alpha = 0.9, steps = TRUE, filter = n %in% c(1, 5, 10))
-#' CoinExample("HHHHHHHHHHHH", alpha = 0.9)
-#' CoinExample("HHHHHHHHHHHH", alpha = 0.9, steps = TRUE)
+#' PropExample("HHTTHTHHTHHH", alpha = 0.9, steps = TRUE)
+#' PropExample("HHTTHTHHTHHH", alpha = 0.9, steps = TRUE)
+#' PropExample("HHTTHTHHTHHH", alpha = 0.9, steps = TRUE, filter = n %in% c(1, 5, 10))
+#' PropExample("HHTTHTHHTHHH", alpha = 0.9, steps = TRUE, filter = n == 10)
+#' # same posterior as in the previous example -- order doesn't matter
+#' PropExample("TTTTHHHHHHHH", alpha = 0.9, steps = TRUE, filter = n == 10)
+#' PropExample("HHHHHHHHHHHH", alpha = 0.9)
+#' PropExample("HHHHHHHHHHHH", alpha = 0.9, steps = TRUE)
+#' PropExample(rbinom(12, 1, 0.25), alpha = 0.9, steps = TRUE)
 
-CoinExample <-
+PropExample <-
   function(data = "HHTT",
            p = seq(0, 1, length.out = resolution + 1),
            prior = 1,
@@ -54,13 +60,20 @@ CoinExample <-
     filter <- enquo(filter)
 
     if (is.factor(data)) {
-      data <- 2 - as.numeric(factor(data))
+      data <- as.numeric(data) - 1
       message(paste("Converting data to", paste(data, collapse = ", ")))
     }
 
     if (is.character(data)) {
       data <- stringr::str_split(data, pattern = "")[[1]]
-      data <- 2 - as.numeric(factor(data))
+      if (all(data %in% c("H", "T"))) {
+        # make sure H = 1 and T = 0
+        data <- 2 - as.numeric(factor(data))
+      } else {
+        # else use alphabetical order
+        # so S = 1 and F = 0, for example
+        data <- as.numeric(factor(data)) - 1
+      }
       message(paste("Converting data to", paste(data, collapse = ", ")))
     }
 
@@ -71,7 +84,7 @@ CoinExample <-
     if (steps) {
       Grid <-
         base::Reduce(c, data, accumulate = TRUE) %>%
-        base::lapply(CoinExample, p = probs, results = "data", accumulate = TRUE) %>%
+        base::lapply(PropExample, p = probs, results = "data", accumulate = TRUE) %>%
         dplyr::bind_rows() %>%
         dplyr::filter( !! filter) %>%
         group_by(p) %>%
