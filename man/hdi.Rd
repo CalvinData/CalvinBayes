@@ -2,20 +2,24 @@
 % Please edit documentation in R/hdi.R
 \name{hdi}
 \alias{hdi}
-\alias{hdi.data.frame}
+\alias{hdi.default}
+\alias{hdi.data.frame2}
 \title{Compute highest density intervals}
 \usage{
-hdi(object, ...)
+hdi(object, prob = 0.95, pars = NULL, ...)
 
-\method{hdi}{data.frame}(object, params = NULL, level = 0.95,
+\method{hdi}{default}(object, prob = 0.95, pars = NULL,
+  regex_pars = NULL, ...)
+
+\method{hdi}{data.frame2}(object, params = NULL, level = 0.95,
   posterior = "posterior")
 }
 \arguments{
 \item{object}{an object describing a posterior distribution}
 
-\item{params}{a vector of parameter names}
-
 \item{prob}{the desired mass of the HDI region.}
+
+\item{params}{a vector of parameter names}
 }
 \value{
 a data frame with 1 row per paramter and variables

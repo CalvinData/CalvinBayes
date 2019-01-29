@@ -2,9 +2,10 @@
 #' Compute highest density intervals
 #'
 #' Compute highest density intervals
+#'
 #' @rdname hdi
 #' @export
-hdi <- function(object, ...) {
+hdi <- function(object, prob = 0.95, pars = NULL, ...) {
   UseMethod("hdi")
 }
 
@@ -40,8 +41,41 @@ hdi <- function(object, ...) {
 
 #' Assume data frame is posterior samples
 #' @rdname hdi
+#' @importFrom coda as.mcmc HPDinterval
 #' @export
-hdi.data.frame <-
+
+hdi.default <-
+  function(object, prob = 0.95, pars = NULL, regex_pars = NULL, ...) {
+    res <- coda::HPDinterval(coda::as.mcmc(object), prob = 0.95)
+    res <-
+      data.frame(
+        par = row.names(res),
+        lower = res[, 1],
+        upper = res[, 2],
+        prob = prob
+      )
+    row.names(res) <- NULL
+
+    if (!is.null(pars) && !is.null(regex_pars)) {
+      return(res %>% filter(par %in% pars | grepl(regex_pars, par)))
+    }
+
+    if (!is.null(pars)) {
+      return(res %>% filter(par %in% pars))
+    }
+
+    if (!is.null(regex_pars)) {
+      return(res %>% filter(grepl(regex_pars, par)))
+    }
+
+    res
+  }
+
+
+#' Assume data frame is posterior samples
+#' @rdname hdi
+#' @export
+hdi.data.frame2 <-
   function(object, params = NULL,
            level = 0.95, posterior = "posterior") {
     if (is.null(params)) {
