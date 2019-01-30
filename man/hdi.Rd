@@ -3,15 +3,15 @@
 \name{hdi}
 \alias{hdi}
 \alias{hdi.default}
-\alias{hdi.data.frame2}
+\alias{hdi_from_grid}
 \title{Compute highest density intervals}
 \usage{
-hdi(object, prob = 0.95, pars = NULL, ...)
+hdi(object, prob = 0.95, pars = NULL, regex_pars, ...)
 
 \method{hdi}{default}(object, prob = 0.95, pars = NULL,
   regex_pars = NULL, ...)
 
-\method{hdi}{data.frame2}(object, params = NULL, level = 0.95,
+hdi_from_grid(object, pars = NULL, prob = 0.95,
   posterior = "posterior")
 }
 \arguments{
@@ -19,7 +19,9 @@ hdi(object, prob = 0.95, pars = NULL, ...)
 
 \item{prob}{the desired mass of the HDI region.}
 
-\item{params}{a vector of parameter names}
+\item{pars}{a vector of parameter names}
+
+\item{regex_pars}{a regular expression for selecting parameter names}
 }
 \value{
 a data frame with 1 row per paramter and variables
@@ -52,7 +54,6 @@ Grid <-
       likelihood = exp(loglik),
       posterior = prior * likelihood
     )
- hdi(Grid, params = c("mean", "sd"))
+ hdi_from_grid(Grid, params = c("mean", "sd"))
 
-Assume data frame is posterior samples
 }

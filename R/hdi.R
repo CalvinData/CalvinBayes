@@ -5,13 +5,14 @@
 #'
 #' @rdname hdi
 #' @export
-hdi <- function(object, prob = 0.95, pars = NULL, ...) {
+hdi <- function(object, prob = 0.95, pars = NULL, regex_pars, ...) {
   UseMethod("hdi")
 }
 
 #' @param object an object describing a posterior distribution
 #' @param prob the desired mass of the HDI region.
-#' @param params a vector of parameter names
+#' @param pars a vector of parameter names
+#' @param regex_pars a regular expression for selecting parameter names
 #' @return a data frame with 1 row per paramter and variables
 #'   * `lo` lower end of hdi
 #'   * `hi` higher end of hdi
@@ -36,10 +37,9 @@ hdi <- function(object, prob = 0.95, pars = NULL, ...) {
 #'       likelihood = exp(loglik),
 #'       posterior = prior * likelihood
 #'     )
-#'  hdi(Grid, params = c("mean", "sd"))
+#'  hdi_from_grid(Grid, params = c("mean", "sd"))
 #'
 
-#' Assume data frame is posterior samples
 #' @rdname hdi
 #' @importFrom coda as.mcmc HPDinterval
 #' @export
@@ -50,8 +50,8 @@ hdi.default <-
     res <-
       data.frame(
         par = row.names(res),
-        lower = res[, 1],
-        upper = res[, 2],
+        lo = res[, 1],
+        hi = res[, 2],
         prob = prob
       )
     row.names(res) <- NULL
@@ -72,15 +72,14 @@ hdi.default <-
   }
 
 
-#' Assume data frame is posterior samples
 #' @rdname hdi
 #' @export
-hdi.data.frame2 <-
-  function(object, params = NULL,
-           level = 0.95, posterior = "posterior") {
-    if (is.null(params)) {
-      params <- names(object)[1]
-      warning("No parameters specified.  Using ", params)
+hdi_from_grid <-
+  function(object, pars = NULL,
+           prob = 0.95, posterior = "posterior") {
+    if (is.null(pars)) {
+      pars <- names(object)[1]
+      warning("No parameters specified.  Using ", pars)
     }
     if (! posterior %in% names(object)) {
       stop(paste0("No column named ", posterior, " in object"))
@@ -88,7 +87,7 @@ hdi.data.frame2 <-
 
     dplyr::bind_rows(
       lapply(
-        params,
+        pars,
         function(p) {
           FOO <-
           object %>%
