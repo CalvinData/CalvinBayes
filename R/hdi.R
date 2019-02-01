@@ -46,7 +46,7 @@ hdi <- function(object, prob = 0.95, pars = NULL, regex_pars, ...) {
 
 hdi.default <-
   function(object, prob = 0.95, pars = NULL, regex_pars = NULL, ...) {
-    res <- coda::HPDinterval(coda::as.mcmc(object), prob = 0.95)
+    res <- coda::HPDinterval(coda::as.mcmc(object), prob = prob)
     res <-
       data.frame(
         par = row.names(res),
@@ -84,6 +84,7 @@ hdi_from_grid <-
     if (! posterior %in% names(object)) {
       stop(paste0("No column named ", posterior, " in object"))
     }
+    object$posterior <- object[[posterior]]
 
     dplyr::bind_rows(
       lapply(
@@ -91,15 +92,21 @@ hdi_from_grid <-
         function(p) {
           FOO <-
           object %>%
-            dplyr::group_by_at(vars(p)) %>%       # collapse to parameter of interest
-            dplyr::summarise(posterior = sum(posterior)) %>%  # normalize
-            setNames(c("theta", "posterior")) %>% # standardize names
-            arrange(posterior) %>%                # sort by posterior
+            # collapse to parameter of interest
+            dplyr::group_by_at(vars(p)) %>%
+            dplyr::summarise(posterior = sum(posterior)) %>%
+            # standardize names
+            setNames(c("theta", "posterior")) %>%
+            # compute resolution (difference in parameter values in grid)
+            # for use in converting form probability to density scale at the end
+            mutate(resolution = mean(diff(sort(theta)))) %>%
+            mutate(posterior = posterior / sum(posterior)) %>%
+            arrange(posterior) %>%              # sort by posterior
             mutate(
               cum_posterior = cumsum(posterior)   # cumulative posterior
             ) %>%
             filter(
-              cum_posterior >= 1 - level,         # keep highest cum_posterior
+              cum_posterior >= 1 - prob,          # keep highest cum_posterior
             )
             FOO %>%
             summarise(                            # summarise what's left
@@ -107,9 +114,9 @@ hdi_from_grid <-
               lo = min(theta),
               hi = max(theta),
               prob = sum(posterior),
-              height = min(posterior),
-              mode_height = first(posterior),
-              mode = first(theta),
+              height = min(posterior) / first(resolution),       # density scale
+              mode_height = last(posterior) / first(resolution), # density scale
+              mode = last(theta),
             )
         }
       )
