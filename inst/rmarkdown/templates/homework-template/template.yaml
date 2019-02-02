@@ -1,0 +1,4 @@
+name: homework template
+description: >
+ A template Rmd file for homework
+create_dir: false
