@@ -14,12 +14,10 @@ Depends:
     ggformula
 Imports:
     ggplot2,
-    rjags,
-    runjags,
-    R2jags,
     coda,
     brms
 Suggests:
+    R2jags,
     bayesplot,
     testthat
 License: What license is it under?
