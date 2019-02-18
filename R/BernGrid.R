@@ -176,5 +176,7 @@ BernGrid <-
     }
   }
 
-
+#' @rdname BernGrid
+#' @export
+bern_grid <- BernGrid
 

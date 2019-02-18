@@ -2,9 +2,15 @@
 % Please edit documentation in R/BernGrid.R
 \name{BernGrid}
 \alias{BernGrid}
+\alias{bern_grid}
 \title{Bayesian inference for a proportion via grid method}
 \usage{
 BernGrid(data = "HHTT", p = seq(0, 1, length.out = resolution + 1),
+  prior = 1, results = c("plot", "data"), steps = FALSE, geom = if
+  (length(p) <= 20) geom_col else geom_area, alpha = 0.5,
+  resolution = 200, filter = TRUE, ...)
+
+bern_grid(data = "HHTT", p = seq(0, 1, length.out = resolution + 1),
   prior = 1, results = c("plot", "data"), steps = FALSE, geom = if
   (length(p) <= 20) geom_col else geom_area, alpha = 0.5,
   resolution = 200, filter = TRUE, ...)
