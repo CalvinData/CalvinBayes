@@ -4,14 +4,9 @@ author: "A. Student"
 date: "`r Sys.Date()`"
 output: 
   html_document:
-    fig_height: 3
-    fig_width: 5
   pdf_document:
-    fig_height: 3
-    fig_width: 5
   word_document:
-    fig_height: 3
-    fig_width: 5
+
 ---
 
 ```{r, setup, include=FALSE}
@@ -32,7 +27,12 @@ theme_set(theme_bw()) # change theme for ggplot2
 
 knitr::opts_chunk$set(
   tidy = FALSE,     # display code as typed
-  size = "small")   # slightly smaller font for code
+  size = "small",   # slightly smaller font for code
+  fig.width = 8, 
+  fig.height = 4.5,
+  out.width = 5
+)
+  
 ```
 
 
