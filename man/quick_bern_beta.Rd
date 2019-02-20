@@ -16,3 +16,7 @@ quick_bern_beta(x, n, ...)
 \description{
 Quick determination of posterior from a beta prior and Bernoulli likelihood
 }
+\examples{
+quick_bern_beta(x = 4, n = 5, a = 2, b = 4)
+quick_bern_beta(x = 4, n = 5, mode = 0.3, concentration = 10)
+}

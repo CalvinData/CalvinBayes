@@ -4,11 +4,13 @@
 #' Quick determination of posterior from a beta prior and Bernoulli likelihood
 #'
 #'
-#' @export
 #' @param x number of successes in data
 #' @param n number of trials in data
 #' @param ... prameters describing the beta prior.  Uses [beta_params()].
-#'
+#' @examples
+#' quick_bern_beta(x = 4, n = 5, a = 2, b = 4)
+#' quick_bern_beta(x = 4, n = 5, mode = 0.3, concentration = 10)
+#' @export
 quick_bern_beta <-
   function(
     x, n,     # data, successes and trials
