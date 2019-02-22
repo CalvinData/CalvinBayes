@@ -3,9 +3,9 @@ title: "Problem Set ??"
 author: "A. Student"
 date: "`r Sys.Date()`"
 output: 
-  html_document:
-  pdf_document:
-  word_document:
+  html_document: default
+  pdf_document: default
+  word_document: default
 
 ---
 
