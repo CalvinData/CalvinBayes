@@ -45,8 +45,7 @@ metro_bern <- function(
 
     if (proposed_theta[i + 1] <= 0 ||
         proposed_theta[i + 1] >= 1) {
-      proposed_posterior <- 0  # because prior is 0
-      prob_move          <- 0
+      prob_move          <- 0    # because prior is 0
     } else {
       current_prior       <- prior(theta[i], ...)
       current_likelihood  <- dbinom(x, n, theta[i])
