@@ -46,6 +46,7 @@ metro_bern <- function(
     if (proposed_theta[i + 1] <= 0 ||
         proposed_theta[i + 1] >= 1) {
       proposed_posterior <- 0  # because prior is 0
+      prob_move          <- 0
     } else {
       current_prior       <- prior(theta[i], ...)
       current_likelihood  <- dbinom(x, n, theta[i])
@@ -53,9 +54,9 @@ metro_bern <- function(
       proposed_prior      <- prior(proposed_theta[i+1], ...)
       proposed_likelihood <- dbinom(x, n, proposed_theta[i+1])
       proposed_posterior  <- proposed_prior * proposed_likelihood
+      prob_move           <- proposed_posterior / current_posterior
     }
 
-    prob_move           <- proposed_posterior / current_posterior
 
     # sometimes we "sail back"
     if (runif(1) > prob_move) { # sail back
