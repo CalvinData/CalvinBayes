@@ -9,19 +9,19 @@ plotPost(samples, center = c("mode", "median", "mean"),
   cenTend = center, comparison_value = NULL,
   compVal = comparison_value, ROPE = NULL, hdi_prob = 0.95,
   credMass = hdi_prob, hdi_text_place = 0.7,
-  HDItextPlace = hdi_text_place, xlab = "Param. Val.", xlim = NULL,
-  yaxt = "n", ylab = "", main = "", cex = 1.4, cex.lab = 1.5,
-  col = "skyblue", border = "white", showCurve = FALSE,
-  breaks = NULL, ...)
+  HDItextPlace = hdi_text_place, quietly = FALSE,
+  xlab = "Param. Val.", xlim = NULL, yaxt = "n", ylab = "",
+  main = "", cex = 1.4, cex.lab = 1.5, col = "skyblue",
+  border = "white", showCurve = FALSE, breaks = NULL, ...)
 
 plot_post(samples, center = c("mode", "median", "mean"),
   cenTend = center, comparison_value = NULL,
   compVal = comparison_value, ROPE = NULL, hdi_prob = 0.95,
   credMass = hdi_prob, hdi_text_place = 0.7,
-  HDItextPlace = hdi_text_place, xlab = "Param. Val.", xlim = NULL,
-  yaxt = "n", ylab = "", main = "", cex = 1.4, cex.lab = 1.5,
-  col = "skyblue", border = "white", showCurve = FALSE,
-  breaks = NULL, ...)
+  HDItextPlace = hdi_text_place, quietly = FALSE,
+  xlab = "Param. Val.", xlim = NULL, yaxt = "n", ylab = "",
+  main = "", cex = 1.4, cex.lab = 1.5, col = "skyblue",
+  border = "white", showCurve = FALSE, breaks = NULL, ...)
 }
 \arguments{
 \item{samples}{a vector of (posterior) sampled values}
@@ -37,6 +37,8 @@ One of \code{"mode"}, \code{"median"} or \code{"mean"}.}
 
 \item{hdi_text_place, HDItextPlace}{location of HDI text on plot.}
 
+\item{quietly}{if TRUE, return summary invisibly.}
+
 \item{xlab, xlim, yaxt, ylab, main, cex, cex.lab, col, border, showCurve, breaks}{arguments for
 \code{\link[graphics:hist]{graphics::hist()}}}
 
@@ -49,4 +51,12 @@ a parameter.
 The options to save the plot to a file have been removed since there are other
 general purpose ways of doing this, and it isn't needed if you are working in
 R Markdown, which is recommended for reporting.
+}
+\examples{
+samples <- rnorm(2000)    # fake a posterior sample
+plot_post(samples)
+plot_post(samples, hdi_prob = 0.90)
+plot_post(samples, hdi_prob = 0.90, ROPE = c(-0.2, 0.2), comparison_value = 2)
+plot_post(samples, hdi_prob = 0.90, ROPE = c(-0.2, 0.2), compVal = 2)
+
 }

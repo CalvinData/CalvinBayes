@@ -61,11 +61,19 @@ diag_mcmc <- diagMCMC
 #' @param ROPE a vector of length 2 giving the ends of the region of practical equivalence
 #' @param hdi_prob,credMass probability for HDI interval
 #' @param hdi_text_place,HDItextPlace location of HDI text on plot.
+#' @param quietly if TRUE, return summary invisibly.
 #' @param xlab,xlim,yaxt,ylab,main,cex,cex.lab,col,border,showCurve,breaks arguments for
 #'   [`graphics::hist()`]
 #' @param ... additional arguments passed along to [graphics::hist()]
 #' @importFrom coda effectiveSize
 #' @export
+#' @examples
+#' samples <- rnorm(2000)    # fake a posterior sample
+#' plot_post(samples)
+#' plot_post(samples, hdi_prob = 0.90)
+#' plot_post(samples, hdi_prob = 0.90, ROPE = c(-0.2, 0.2), comparison_value = 2)
+#' plot_post(samples, hdi_prob = 0.90, ROPE = c(-0.2, 0.2), compVal = 2)
+#'
 
 plotPost <- function(
   samples,
@@ -75,6 +83,7 @@ plotPost <- function(
   ROPE = NULL,
   hdi_prob = 0.95, credMass = hdi_prob,
   hdi_text_place = 0.7, HDItextPlace = hdi_text_place,
+  quietly = FALSE,
   xlab = "Param. Val.", xlim = NULL,
   yaxt = "n", ylab = "", main = "",
   cex = 1.4, cex.lab = 1.5,
@@ -101,24 +110,38 @@ plotPost <- function(
     samples = as.matrix(samples)
   }
 
-  summaryColNames = c("ESS", "mean", "median", "mode",
-                      "hdiMass", "hdiLow", "hdiHigh",
-                      "compVal", "pGtCompVal",
-                      "ROPElow", "ROPEhigh", "pLtROPE", "pInROPE", "pGtROPE")
-  postSummary = matrix(NA, nrow = 1, ncol = length(summaryColNames),
-                       dimnames = list(c(xlab), summaryColNames))
+  # summaryColNames = c("ESS", "mean", "median", "mode",
+  #                     "hdiMass", "hdiLow", "hdiHigh",
+  #                     "compVal", "pGtCompVal",
+  #                     "ROPElow", "ROPEhigh", "pLtROPE", "pInROPE", "pGtROPE")
+  # postSummary = matrix(NA, nrow = 1, ncol = length(summaryColNames),
+  #                      dimnames = list(c(xlab), summaryColNames))
+  # postSummary[, "ESS"] = coda::effectiveSize(samples)
+  # postSummary[, "mean"] = mean(samples)
+  # postSummary[, "median"] = median(samples)
+  # mcmcDensity = density(samples)
+  # postSummary[, "mode"] = mcmcDensity$x[which.max(mcmcDensity$y)]
+  # postSummary[, "hdiMass"] <- credMass
+  # postSummary[, "hdiLow"] <- HDI[1]
+  # postSummary[, "hdiHigh"] <- HDI[2]
 
-  postSummary[, "ESS"] = coda::effectiveSize(samples)
-
-  postSummary[, "mean"] = mean(samples)
-  postSummary[, "median"] = median(samples)
-  mcmcDensity = density(samples)
-  postSummary[, "mode"] = mcmcDensity$x[which.max(mcmcDensity$y)]
-
+  mcmcDensity <- density(samples)
   HDI = HDIofMCMC(samples, credMass)
-  postSummary[, "hdiMass"] <- credMass
-  postSummary[, "hdiLow"] <- HDI[1]
-  postSummary[, "hdiHigh"] <- HDI[2]
+
+  postSummary <- list(
+    "posterior" =
+      data.frame(check.names = FALSE,
+        ESS =  coda::effectiveSize(samples),
+        mean = mean(samples),
+        median = median(samples),
+        mode = mcmcDensity$x[which.max(mcmcDensity$y)]),
+    "hdi" =
+      data.frame(
+        prob = credMass,
+        lo = HDI[1],
+        hi = HDI[2]
+      )
+  )
 
   # Plot histogram.
   cvCol = "darkgreen"
@@ -171,15 +194,20 @@ plotPost <- function(
   if (!is.null(compVal)) {
     pGtCompVal = sum(samples > compVal) / length(samples)
     pLtCompVal = 1 - pGtCompVal
-    lines(c(compVal, compVal), c(0.96*cvHt, 0),
+    postSummary[["comparison"]] <-
+      data.frame(check.names = FALSE,
+        "value" = compVal,
+        "P(< comp. val.)"  = pLtCompVal,
+        "P(> comp. val.)"  = pGtCompVal
+      )
+    lines(c(compVal, compVal), c(0.96 * cvHt, 0),
            lty = "dotted", lwd = 2, col = cvCol)
     text(compVal, cvHt,
           bquote(.(round(100*pLtCompVal, 1)) * "% < " *
                     .(signif(compVal, 3)) * " < " *
                     .(round(100*pGtCompVal, 1)) * "%"),
           adj = c(pLtCompVal, 0), cex = 0.8*cex, col = cvCol)
-    postSummary[, "compVal"] = compVal
-    postSummary[, "pGtCompVal"] = pGtCompVal
+
   }
   # Display the ROPE.
   if (!is.null(ROPE)) {
@@ -197,11 +225,14 @@ plotPost <- function(
                     .(round(100*pGtROPE, 1)) * "%"),
           adj = c(pLtROPE+.5*pInROPE, 0), cex = 1, col = ropeCol)
 
-    postSummary[, "ROPElow"] = ROPE[1]
-    postSummary[, "ROPEhigh"] = ROPE[2]
-    postSummary[, "pLtROPE"] = pLtROPE
-    postSummary[, "pInROPE"] = pInROPE
-    postSummary[, "pGtROPE"] = pGtROPE
+    postSummary[["ROPE"]] <-
+      data.frame(check.names = FALSE,
+        lo  = ROPE[1],
+        hi = ROPE[2],
+        `P(< ROPE)`  = pLtROPE,
+        `P(in ROPE)` = pInROPE,
+        `P(> ROPE)`  = pGtROPE
+      )
   }
   # Display the HDI.
   lines(HDI, c(0, 0), lwd = 4, lend = 1)
@@ -212,8 +243,12 @@ plotPost <- function(
   text(HDI[2], 0, bquote(.(signif(HDI[2], 3))),
         adj = c(1.0-HDItextPlace, -0.5), cex = cex)
   par(xpd = FALSE)
-  #
-  return(postSummary[!is.na(postSummary)])
+
+  if (quietly) {
+    invisible(postSummary)
+  } else {
+    postSummary
+  }
 }
 
 #' @rdname plot_post
