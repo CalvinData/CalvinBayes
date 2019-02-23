@@ -71,7 +71,7 @@ plotPost <- function(
   samples,
   center = c("mode", "median", "mean"),
   cenTend = center,
-  comparison_value = NULL, compVal = comparision_value,
+  comparison_value = NULL, compVal = comparison_value,
   ROPE = NULL,
   hdi_prob = 0.95, credMass = hdi_prob,
   hdi_text_place = 0.7, HDItextPlace = hdi_text_place,
