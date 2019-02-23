@@ -23,17 +23,26 @@ library(purrr)          # functional programming
 
 # Some customization.  You can alter or delete as desired (if you know what you are doing).
 
-theme_set(theme_bw()) # change theme for ggplot2
+# this sets the black/white theme for plots.
+# you can change the base_size to control the size of the text elements in the plot
+theme_set(theme_bw(base_size = 8)) 
 
 knitr::opts_chunk$set(
   tidy = FALSE,     # display code as typed
   size = "small",   # slightly smaller font for code
-  fig.width = 8, 
-  fig.height = 4.5,
-  out.width = 5
+  fig.width = 3.0,  # width of figures (can be overridden in individual chunks)
+  fig.height = 2.0, # heights of figures (can be overridden in individual chunks)
+  fig.show = "hold" # put all figures after all the code
 )
-  
 ```
 
 
 ## Problem ?.?
+
+An example with a couple of plots.  Delete this and insert you own text, code, and 
+figures.
+
+```{r}
+gf_dhistogram( ~ rnorm(1000))
+gf_desnity( ~ rnorm(1000))
+```
