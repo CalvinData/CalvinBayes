@@ -1,37 +1,58 @@
+
+#' Diagnostic Plots for MCMC samples
+#'
+#' This function mimics `diagMCMC()` from Kruschke's *Doing Bayesian Data Analysis*.
+#' The options to save the plot to a file have been removed since there are other
+#' general purpose ways of doing this, and it isn't needed if you are working in
+#' R Markdown, which is recommended for reporting.
+#'
+#' @param object an MCMC object as per the coda package
+#' @param pars the name of a parameter for which diagnostics are displayed
+#' @param parName an alias for pars
+#'
+#' @rdname diag_mcmc
 #' @export
-diagMCMC = function( codaObject , parName=varnames(codaObject)[1] ,
-                     saveName=NULL , saveType="jpg" ) {
-  DBDAplColors = c("skyblue","black","royalblue","steelblue")
-  # openGraph(height=5,width=7)
-  par( mar=0.5+c(3,4,1,0) , oma=0.1+c(0,0,2,0) , mgp=c(2.25,0.7,0) ,
-       cex.lab=1.5 )
-  layout(matrix(1:4,nrow=2))
+diagMCMC <- function(object, parName = varnames(object)[1],
+                     saveName = NULL , saveType = "jpg") {
+  DBDAplColors = c("skyblue", "black", "royalblue", "steelblue")
+  par(mar=0.5+c(3,4,1,0), oma = 0.1 + c(0,0,2,0), mgp = c(2.25,0.7,0),
+       cex.lab = 1.5)
+  layout(matrix(1:4, nrow = 2))
   # traceplot and gelman.plot are from CODA package:
   require(coda)
-  coda::traceplot( codaObject[,c(parName)] , main="" , ylab="Param. Value" ,
-                   col=DBDAplColors )
+  coda::traceplot(object[,c(parName)], main="", ylab="Param. Value",
+                   col=DBDAplColors)
   tryVal = try(
-    coda::gelman.plot( codaObject[,c(parName)] , main="" , auto.layout=FALSE ,
-                       col=DBDAplColors )
+    coda::gelman.plot(object[,c(parName)], main = "", auto.layout = FALSE ,
+                       col=DBDAplColors)
   )
   # if it runs, gelman.plot returns a list with finite shrink values:
   if ( class(tryVal)=="try-error" ) {
     plot.new()
-    print(paste0("Warning: coda::gelman.plot fails for ",parName))
+    print(paste0("Warning: coda::gelman.plot fails for ", parName))
   } else {
     if ( class(tryVal)=="list" & !is.finite(tryVal$shrink[1]) ) {
       plot.new()
-      print(paste0("Warning: coda::gelman.plot fails for ",parName))
+      print(paste0("Warning: coda::gelman.plot fails for ", parName))
     }
   }
-  DbdaAcfPlot(codaObject,parName,plColors=DBDAplColors)
-  DbdaDensPlot(codaObject,parName,plColors=DBDAplColors)
+  DbdaAcfPlot(object, parName, plColors = DBDAplColors)
+  DbdaDensPlot(object, parName, plColors = DBDAplColors)
   mtext( text=parName , outer=TRUE , adj=c(0.5,0.5) , cex=2.0 )
   # if ( !is.null(saveName) ) {
   #   saveGraph( file=paste0(saveName,"Diag",parName), type=saveType)
   # }
 }
 
+#' @rdname diag_mcmc
+#' @export
+diag_mcmc <- diagMCMC
+
+#' Plot posterior samples
+#'
+#' Plot posterior samples
+#'
+#' @rdname plot_post
 #' @export
 plotPost = function( paramSampleVec , cenTend=c("mode","median","mean")[1] ,
                      compVal=NULL, ROPE=NULL, credMass=0.95, HDItextPlace=0.7,
@@ -171,3 +192,7 @@ plotPost = function( paramSampleVec , cenTend=c("mode","median","mean")[1] ,
   #
   return( postSummary )
 }
+
+#' @rdname plot_post
+#' @export
+plot_post <- plotPost
