@@ -213,7 +213,7 @@ plotPost <- function(
         adj = c(1.0-HDItextPlace, -0.5), cex = cex)
   par(xpd = FALSE)
   #
-  return(postSummary)
+  return(postSummary[!is.na(postSummary)])
 }
 
 #' @rdname plot_post
