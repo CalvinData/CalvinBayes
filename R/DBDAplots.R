@@ -12,8 +12,7 @@
 #'
 #' @rdname diag_mcmc
 #' @export
-diagMCMC <- function(object, parName = varnames(object)[1],
-                     saveName = NULL, saveType = "jpg") {
+diagMCMC <- function(object, parName = varnames(object)[1]) {
   DBDAplColors = c("skyblue", "black", "royalblue", "steelblue")
   par(mar = 0.5+c(3, 4, 1, 0), oma = 0.1 + c(0, 0, 2, 0), mgp = c(2.25, 0.7, 0),
        cex.lab = 1.5)
@@ -47,7 +46,12 @@ diag_mcmc <- diagMCMC
 
 #' Plot posterior samples
 #'
-#' Plot posterior samples
+#' This function mimics `plotPost()` from Kruschke's *Doing Bayesian Data Analysis*
+#' and provides a highly customized plot of a vector of posterior samples for
+#' a parameter.
+#' The options to save the plot to a file have been removed since there are other
+#' general purpose ways of doing this, and it isn't needed if you are working in
+#' R Markdown, which is recommended for reporting.
 #'
 #' @rdname plot_post
 #' @param samples a vector of (posterior) sampled values
@@ -62,6 +66,7 @@ diag_mcmc <- diagMCMC
 #' @param ... additional arguments passed along to [graphics::hist()]
 #' @importFrom coda effectiveSize
 #' @export
+
 plotPost <- function(
   samples,
   center = c("mode", "median", "mean"),
@@ -213,4 +218,5 @@ plotPost <- function(
 
 #' @rdname plot_post
 #' @export
+
 plot_post <- plotPost
