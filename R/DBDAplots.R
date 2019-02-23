@@ -82,7 +82,7 @@ plotPost <- function(
   showCurve = FALSE, breaks = NULL,
   ...) {
 
-  cenTend <- match.arg(choices =  c("mode", "median", "mean"))
+  cenTend <- match.arg(cenTend, choices =  c("mode", "median", "mean"))
 
   # Override defaults of hist function, if not specified by user:
   # (additional arguments "..." are passed to the hist function)
