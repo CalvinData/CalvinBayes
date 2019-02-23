@@ -39,10 +39,17 @@ knitr::opts_chunk$set(
 
 ## Problem ?.?
 
-An example with a couple of plots.  Delete this and insert you own text, code, and 
-figures.
+An example with a couple of plots.  Notice that they appear after all
+of the code and are small enough to fit side-by-side.
 
 ```{r}
-gf_dhistogram( ~ rnorm(1000))
-gf_desnity( ~ rnorm(1000))
+gf_dhistogram( ~ age, data = mosaicData::HELPrct)
+gf_density( ~ age, data = mosaicData::HELPrct)
+```
+
+Here's a wider plot using `fig.width = 6`:
+
+```{r, fig.width = 6}
+gf_dhistogram( ~ age, data = mosaicData::HELPrct, binwidth = 1) %>%
+  gf_dens()
 ```
