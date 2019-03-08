@@ -36,4 +36,5 @@ gamma_params(10, 5)
 gamma_params(10, scale = 5)
 gamma_params(mean = 10, sd = 3)
 gamma_params(mode = 10, sd = 3, plot = TRUE)
+gamma_params(mean = 1, sd = 10, plot = TRUE)
 }
