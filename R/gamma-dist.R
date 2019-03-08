@@ -56,7 +56,7 @@ gamma_params <-
       stop("Only one of scale and rate may be supplied.")
     }
 
-    if (is.null(rate)) rate <- 1/scale
+    if (is.null(rate) && ! is.null(scale)) rate <- 1/scale
 
     if (!is.null(rate) & !is.null(shape)) {
       Res <-
@@ -87,6 +87,36 @@ gamma_params <-
           shape = 1 + mode * rate,
           scale = 1 / rate,
           mean  = shape / rate
+        )
+    } else if (!is.null(shape) & !is.null(sd)) {
+      Res <-
+        dplyr::tibble(
+          shape = shape,
+          sd    = sd,
+          rate  = sqrt(shape) / sd,
+          scale = 1/rate,
+          mean  = shape / rate,
+          mode  = (shape - 1) / rate
+        )
+    } else if (!is.null(shape) & !is.null(mean)) {
+      Res <-
+        dplyr::tibble(
+          shape = shape,
+          rate = shape / mean,
+          scale = 1 / rate,
+          mean  = shape / rate,
+          mode  = (shape - 1) / rate,
+          sd    = sqrt(shape) / rate
+        )
+    } else if (!is.null(shape) & !is.null(mode)) {
+      Res <-
+        dplyr::tibble(
+          shape = shape,
+          rate = (shape - 1) / mode,
+          scale = 1 / rate,
+          mean  = shape / rate,
+          mode  = (shape - 1) / rate,
+          sd    = sqrt(shape) / rate
         )
     } else {
       stop(paste(
