@@ -23,7 +23,8 @@ hdi <- function(object, prob = 0.95, pars = NULL, regex_pars, ...) {
 #' Grid <-
 #'   expand.grid(x = seq(0, 1, length.out = 201)) %>%
 #'     mutate(posterior = dbeta(x, 30, 12))
-#' hdi(Grid, "x", prob = 0.9)
+#' hdi_from_grid(Grid, "x", prob = 0.9)
+#' hdi(mosaic::resample(Grid, prob = Grid$posterior, size = 10000)$x, prob = 0.9)
 #' x <- rnorm(25, 3, 2)  # some random data
 #' Grid <-
 #'   expand.grid(
@@ -47,30 +48,42 @@ hdi <- function(object, prob = 0.95, pars = NULL, regex_pars, ...) {
 hdi.default <-
   function(object, prob = 0.95, pars = NULL, regex_pars = NULL, ...) {
     res <- coda::HPDinterval(coda::as.mcmc(object), prob = prob)
-    res <-
-      data.frame(
-        par = row.names(res),
-        lo = res[, 1],
-        hi = res[, 2],
-        prob = prob
-      )
-    row.names(res) <- NULL
 
-    if (!is.null(pars) && !is.null(regex_pars)) {
-      return(res %>% filter(par %in% pars | grepl(regex_pars, par)))
+    if (is.list(res)) {
+      for (i in 1:length(res)) {
+        res[[i]] <-
+          convert_to_df(res[[i]], pars = pars, regex_pars = regex_pars) %>%
+          mutate(chain = i)
+      }
+      bind_rows(res) %>%
+        arrange(par, chain)
+    } else {
+      convert_to_df(res, pars = pars, regex_pars = regex_pars, prob = prob)
     }
-
-    if (!is.null(pars)) {
-      return(res %>% filter(par %in% pars))
-    }
-
-    if (!is.null(regex_pars)) {
-      return(res %>% filter(grepl(regex_pars, par)))
-    }
-
-    res
   }
 
+convert_to_df <- function(object, prob = 0.95, pars = NULL, regex_pars = NULL) {
+  res <-
+    data.frame(
+      par = row.names(object),
+      lo = object[, 1],
+      hi = object[, 2],
+      prob = prob
+    )
+  row.names(res) <- NULL
+  if (!is.null(pars) && !is.null(regex_pars)) {
+    return(res %>% filter(par %in% pars | grepl(regex_pars, par)))
+  }
+
+  if (!is.null(pars)) {
+    return(res %>% filter(par %in% pars))
+  }
+
+  if (!is.null(regex_pars)) {
+    return(res %>% filter(grepl(regex_pars, par)))
+  }
+  res
+}
 
 #' @rdname hdi
 #' @export

@@ -40,7 +40,8 @@ Compute highest density intervals
 Grid <-
   expand.grid(x = seq(0, 1, length.out = 201)) \%>\%
     mutate(posterior = dbeta(x, 30, 12))
-hdi(Grid, "x", prob = 0.9)
+hdi_from_grid(Grid, "x", prob = 0.9)
+hdi(mosaic::resample(Grid, prob = Grid$posterior, size = 10000)$x, prob = 0.9)
 x <- rnorm(25, 3, 2)  # some random data
 Grid <-
   expand.grid(
