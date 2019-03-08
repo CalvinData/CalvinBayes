@@ -24,6 +24,7 @@
 #' gamma_params(10, scale = 5)
 #' gamma_params(mean = 10, sd = 3)
 #' gamma_params(mode = 10, sd = 3, plot = TRUE)
+#' gamma_params(mean = 1, sd = 10, plot = TRUE)
 
 gamma_params <-
   function(shape = NULL,
@@ -99,22 +100,22 @@ gamma_params <-
       f_mean <-
         0 + dgamma(Res$mean, shape = Res$shape, rate = Res$rate) ~
         Res$mean + Res$mean
-      f_mode <-
-        0 + dgamma(Res$mode, shape = Res$shape, rate = Res$rate) ~
-        Res$mode + Res$mode
       p <- ggformula::gf_dist("gamma", shape = Res$shape, rate = Res$rate, ...)
       if (! "kind" %in% names(list(...))) {
         p <- p +
-          ggplot2::geom_segment(aes(x = Res$mean, xend = Res$mean,
-                                    yend = dgamma(Res$mean, shape = Res$shape,
-                                                  rate = Res$rate),
-                                    y = 0))
+          ggplot2::geom_segment(
+            aes(x = Res$mean, xend = Res$mean,
+                yend = dgamma(Res$mean, shape = Res$shape, rate = Res$rate),
+                y = 0))
         if (!is.na(Res$mode)) {
+          f_mode <-
+            0 + dgamma(Res$mode, shape = Res$shape, rate = Res$rate) ~
+            Res$mode + Res$mode
           p <- p +
-            ggplot2::geom_segment(aes(x = Res$mode, xend = Res$mode,
-                                      yend = dgamma(Res$mode, shape = Res$shape,
-                                                    rate = Res$rate),
-                                      y = 0))
+            ggplot2::geom_segment(
+              aes(x = Res$mode, xend = Res$mode,
+                  yend = dgamma(Res$mode, shape = Res$shape, rate = Res$rate),
+                  y = 0))
         }
       }
       p <- p +
