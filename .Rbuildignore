@@ -4,5 +4,4 @@
 ^data-raw$
 ^.*\.Rproj$
 ^\.Rproj\.user$
-^R/DBDA2E-utilities\.R$
 ^Rbuildignore$
