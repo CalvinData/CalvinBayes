@@ -12,11 +12,47 @@ posterior <- function(object, ...) {
   UseMethod("posterior")
 }
 
+array2posterior <- function(a) {
+  res <- a
+  dn <- dimnames(res)
+  dm <- dim(res)
+  n_iter   <- dm[[1]]
+  n_chains  <- dm[[2]]
+  n_params <- dm[[3]]
+
+  dim(res) <- c(n_iter * n_chains, n_params)
+  res <- as.data.frame(res)
+  names(res) <- dn[[3]]
+  if (is.null(dn[[2]])) {
+    dn[[2]] <- paste0("chain:", 1:dm[[2]])
+  }
+  if ("chain" %in% names(res)) {
+    res$.chain <- rep(dn[[2]], each = n_iter)
+  } else {
+    res$chain  <- rep(dn[[2]], each = n_iter)
+  }
+  if ("iter" %in% names(res)) {
+    res$.iter <- rep(1:n_iter, times = n_chains)
+  } else {
+    res$iter  <- rep(1:n_iter, times = n_chains)
+  }
+  names(res) <- gsub("\\[(\\d*)\\]", ".\\1", names(res))
+  res
+}
+
 #' @rdname posterior
 #' @export
 #'
 posterior.rjags <- function(object, ...) {
-  as.data.frame(object$BUGSoutput$sims.list)
+  array2posterior(object$BUGSoutput$sims.array)
+}
+
+#' @rdname posterior
+#' @export
+#'
+posterior.stanfit <- function(object, ...) {
+  res <- rstan::extract(object, permute = FALSE, ...)
+  array2posterior(res)
 }
 
 #' @rdname posterior

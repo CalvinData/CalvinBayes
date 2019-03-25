@@ -11,7 +11,6 @@ output:
 
 ```{r, setup, include=FALSE}
 # our favorite suite of packages
-library(CalvinBayes)    # Load additional packages here 
 library(ggformula)      # formula interface to ggplot2
 library(dplyr)          # data wrangling
 library(tidyr)          # more data wrangling
@@ -20,6 +19,7 @@ library(rstan)          # use Stan from R
 library(bayesplot)      # plots related to Bayesian data analysis
 library(coda)           # work with MCMC samples
 library(purrr)          # functional programming
+library(CalvinBayes)    # load after coda and bayesplot
 
 # Some customization.  You can alter or delete as desired (if you know what you are doing).
 

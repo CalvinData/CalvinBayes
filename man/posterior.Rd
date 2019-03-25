@@ -3,12 +3,15 @@
 \name{posterior}
 \alias{posterior}
 \alias{posterior.rjags}
+\alias{posterior.stanfit}
 \alias{posterior.brmsfit}
 \title{Extract posterior samples as a tidy data frame}
 \usage{
 posterior(object, ...)
 
 \method{posterior}{rjags}(object, ...)
+
+\method{posterior}{stanfit}(object, ...)
 
 \method{posterior}{brmsfit}(object, ...)
 }

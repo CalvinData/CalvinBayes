@@ -1,4 +1,4 @@
-
+#'
 #' Summarize an rjags object
 #'
 #' Summarize an rjags object
@@ -72,8 +72,67 @@ print.summary.rjags <- function(x, digits = NULL, ...) {
 }
 
 # borrowed from R2jags
-
 fround <- function (x, digits)
 {
   format(round(x, digits), nsmall = digits)
 }
+
+#' Effective Sample Size for MCMC objects
+#'
+#' Extract effective sample size information from MCMC objects.
+#' `neff()` is a generic function. See below for objects that
+#' `neff()` knows how to handle.
+#'
+#' @param object an object containing information about MCMC samples
+#' @param regex_pars a vector of regular expressions matching the parameters for which
+#'   effective sample size will be returned.
+#' @param ... additional arguments passed to specific methods
+#'
+#' @export
+
+neff <- function(object, ...) {
+  UseMethod("neff")
+}
+
+#' @export
+neff.rjags <- function(object, regex_pars = NULL, ...) {
+  res <- object$BUGSoutput$summary[, "n.eff"] %>%
+    setNames(rownames(object$BUGSoutput$summary))
+  if (!is.null(regex_pars)) {
+    res <- res[base::grepl(regex_pars, names(res))]
+  }
+  res
+}
+
+
+#' @importFrom bayesplot rhat
+#' @export
+rhat <- function(object, ...) {
+  UseMethod("rhat")
+  }
+
+#' @export
+rhat.default <- function(object, ...) {
+  bayesplot::rhat(object, ...)
+}
+
+#' @export
+rhat.rjags <- function(object, regex_pars = NULL, ...) {
+  res <- object$BUGSoutput$summary[, "Rhat"] %>%
+    setNames(rownames(object$BUGSoutput$summary))
+  if (!is.null(regex_pars)) {
+    res <- res[base::grepl(regex_pars, names(res))]
+  }
+  res
+}
+
+#' @export
+summary_df <- function(object, regex_pars = NULL, ...) {
+  UseMethod("summary_df")
+}
+
+#' @export
+summary_df.rjags <-
+  function(object, regex_pars = NULL, ...) {
+    as_tibble(object$BUGSoutput$summary)
+  }

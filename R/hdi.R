@@ -62,6 +62,13 @@ hdi.default <-
     }
   }
 
+#' @export
+hdi.data.frame <-
+  function(object, prob = 0.95, pars = NULL, regex_pars = NULL, ...) {
+    object <- object[sapply(object, is.numeric)]
+    hdi.default(object, prob = prob, pars = pars, regex_pars = regex_pars, ...)
+  }
+
 convert_to_df <- function(object, prob = 0.95, pars = NULL, regex_pars = NULL) {
   res <-
     data.frame(
