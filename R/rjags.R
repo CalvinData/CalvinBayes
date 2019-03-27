@@ -127,12 +127,15 @@ rhat.rjags <- function(object, regex_pars = NULL, ...) {
 }
 
 #' @export
-summary_df <- function(object, regex_pars = NULL, ...) {
+summary_df <- function(object, ...) {
   UseMethod("summary_df")
 }
 
 #' @export
 summary_df.rjags <-
-  function(object, regex_pars = NULL, ...) {
-    as_tibble(object$BUGSoutput$summary)
+  function(object, ...) {
+    as_tibble(object$BUGSoutput$summary) %>%
+      mutate(param = rownames(object$BUGSoutput$summary)) %>%
+      select(param, names(.))
+
   }
