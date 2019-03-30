@@ -1,6 +1,6 @@
 
 library(readr)
-
+library(devtools)
 # foo <-
 #   function(x) {
 #     name <- gsub(".csv", "", x)
@@ -65,11 +65,11 @@ use_data(HtWt30, overwrite = TRUE)
 HtWt300 <- read_csv("HtWtData300.csv")
 use_data(HtWt300, overwrite = TRUE)
 
-IncomeFamszState <- read_csv("IncomeFamszState.csv")
-use_data(IncomeFamszState, overwrite = TRUE)
+IncomeFamilySize <- read_csv("IncomeFamszState.csv")
+use_data(IncomeFamilySize, overwrite = TRUE)
 
-IncomeFamszState3yr <- read_csv("IncomeFamszState3yr.csv")
-use_data(IncomeFamszState3yr, overwrite = TRUE)
+IncomeFamilySize <- read_csv("IncomeFamszState3yr.csv")
+use_data(IncomeFamilySize, overwrite = TRUE)
 
 ItemResponseTheory <- read_csv("ItemResponseTheoryData.csv")
 use_data(ItemResponseTheory, overwrite = TRUE)
