@@ -8,7 +8,7 @@
 \itemize{
 \item \code{height}: height in cm after 14 days
 \item \code{group}: \code{"Ancy"} or \code{"Control"}
-\item \code{group_ind}: 0 for the control group and 1 for the Ancy group.
+\item \code{group_ind}: 1 for the control group and 2 for the Ancy group.
 }}
 \usage{
 Ancy
