@@ -4,12 +4,21 @@
 \alias{rstudent_t}
 \title{Shifted and scaled t distributions}
 \usage{
-rstudent_t(n, df, mean = 0, sd = 1)
+rstudent_t(n, df, mean = 0, sigma = 1, sd = NULL)
 }
 \arguments{
 \item{n}{Number of random draws to perform.}
 
-\item{df, mean, sd}{Degrees of freedom, mean, and standard deviation of distribution}
+\item{df}{Degrees of freedom}
+
+\item{mean}{Location parameter (equals mean when \code{df > 1}).}
+
+\item{sigma}{Scale parameter.  Note: this is smaller than the standard deviation
+(when the standard deviation exists).}
+
+\item{sd}{Standard deviation of distribution, but note that this only exists when
+\code{df > 2}.  If provided, \code{sd} supersedes \code{sigma}. A warning message is provided when
+\code{df <= 2} and \code{sd} is used.}
 }
 \value{
 A vector of random draws from the appropriate t distribution(s).
@@ -17,4 +26,11 @@ A vector of random draws from the appropriate t distribution(s).
 \description{
 The functions are designed for compatibility with Stan's student t distribution
 which has three parameters: degrees of freedom, mean, and standard deviation.
+}
+\examples{
+rstudent_t(5, mean = 10, sigma = 2, df = 3)
+rstudent_t(5, mean = 10, sd = 2, df = 3)
+sd(rstudent_t(5000, mean = 10, sd = 2, df = 4))
+# sigma = 2, sd = 2 * sqrt(4/2) approx 2.8
+sd(rstudent_t(50000, mean = 10, sigma = 2, df = 4))
 }

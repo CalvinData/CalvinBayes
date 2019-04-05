@@ -1,7 +1,7 @@
 Package: CalvinBayes
 Type: Package
 Title: Support for Computational Bayesian Analysis Courses
-Version: 0.1.0.9004
+Version: 0.1.0.9006
 Authors@R: 
     person(given = "Randall",
            family = "Pruim",
@@ -11,14 +11,14 @@ Description: Provides support for an introductory course in Computational
     Bayesian Analysis.
 Depends:
     dplyr,
-    ggformula
+    ggformula,
+    bayesplot
 Imports:
     ggplot2,
     coda,
     brms
 Suggests:
     R2jags,
-    bayesplot,
     testthat
 License: What license is it under?
 Encoding: UTF-8
