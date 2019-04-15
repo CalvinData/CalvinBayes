@@ -40,7 +40,10 @@ use_data(FourByFourCount, overwrite = TRUE)
 
 FruitflyReduced <-
   read_csv("FruitflyDataReduced.csv") %>%
-  rename(group = CompanionNumber, longevity = Longevity)
+  rename(
+    longevity = Longevity,
+    group = CompanionNumber,
+    throax = Thorax)
 
 use_data(FruitflyReduced, overwrite = TRUE)
 
