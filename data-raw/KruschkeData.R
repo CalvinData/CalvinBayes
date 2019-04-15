@@ -38,7 +38,10 @@ use_data(CrimeDrink, overwrite = TRUE)
 FourByFourCount <- read_csv("FourByFourCount.csv")
 use_data(FourByFourCount, overwrite = TRUE)
 
-FruitflyReduced <- read_csv("FruitflyDataReduced.csv")
+FruitflyReduced <-
+  read_csv("FruitflyDataReduced.csv") %>%
+  rename(group = CompanionNumber, longevity = Longevity)
+
 use_data(FruitflyReduced, overwrite = TRUE)
 
 Guber1999<- read_csv("Guber1999data.csv")
