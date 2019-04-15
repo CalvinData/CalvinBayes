@@ -60,7 +60,7 @@ posterior.stanfit <- function(object, ...) {
 #' @export
 #'
 posterior.brmsfit <- function(object, ...) {
-  brmsfit::posterior_samples(object, ...)
+  brms::posterior_samples(object, ...)
 }
 
 #' @export
