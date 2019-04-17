@@ -43,7 +43,7 @@ FruitflyReduced <-
   rename(
     longevity = Longevity,
     group = CompanionNumber,
-    throax = Thorax)
+    thorax = Thorax)
 
 use_data(FruitflyReduced, overwrite = TRUE)
 
