@@ -69,7 +69,7 @@ hdi.data.frame <-
       # for y ~ x use y as name and x as expression to evaluate
       # for   ~ x use x as both name and expression to evaluate
       l <- length(pars)
-      name <- if(is.characther(pars[[2]])) {
+      name <- if(is.character(pars[[2]])) {
           pars[[2]]
         } else {
           deparse(pars[[2]])
