@@ -65,6 +65,13 @@ hdi.default <-
 #' @export
 hdi.data.frame <-
   function(object, prob = 0.95, pars = NULL, regex_pars = NULL, ...) {
+    if (inherits(pars, "formula")) {
+      # for y ~ x use y as name and x as expression to evaluate
+      # for   ~ x use x as both name and expression to evaluate
+      l <- length(pars)
+      object[[deparse(pars[[2]])]] <- eval(pars[[l]], object, parent.frame())
+      pars <- tail(names(object), 1)
+    }
     object <- object[sapply(object, is.numeric)]
     hdi.default(object, prob = prob, pars = pars, regex_pars = regex_pars, ...)
   }

@@ -1,5 +1,6 @@
 # CalvinBayes 0.1.0
 
+* Added processing of pars a formula in `hdi.data.frame()`  
 * Added `rstudent_t()` for simulating draws from a scaled/shifted t distribution
 * Added `posterior()` generic and methods for generating tidy data frame of posterior
     samples.
