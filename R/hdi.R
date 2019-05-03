@@ -13,6 +13,7 @@ hdi <- function(object, prob = 0.95, pars = NULL, regex_pars, ...) {
 #' @param prob the desired mass of the HDI region.
 #' @param pars a vector of parameter names
 #' @param regex_pars a regular expression for selecting parameter names
+#' @param ... additional arguments (ignored for now)
 #' @return a data frame with 1 row per paramter and variables
 #'   * `lo` lower end of hdi
 #'   * `hi` higher end of hdi
@@ -48,11 +49,13 @@ hdi <- function(object, prob = 0.95, pars = NULL, regex_pars, ...) {
 hdi.default <-
   function(object, prob = 0.95, pars = NULL, regex_pars = NULL, ...) {
     res <- coda::HPDinterval(coda::as.mcmc(object), prob = prob)
+    map <- coda::HPDinterval(coda::as.mcmc(object), prob = 0.001)
 
     if (is.list(res)) {
       for (i in 1:length(res)) {
         res[[i]] <-
-          convert_to_df(res[[i]], pars = pars, regex_pars = regex_pars) %>%
+          convert_to_df(res[[i]], pars = pars, regex_pars = regex_pars,
+                        mode = (map$lo + map$hi) / 2) %>%
           mutate(chain = i)
       }
       bind_rows(res) %>%
@@ -81,14 +84,17 @@ hdi.data.frame <-
     hdi.default(object, prob = prob, pars = pars, regex_pars = regex_pars, ...)
   }
 
-convert_to_df <- function(object, prob = 0.95, pars = NULL, regex_pars = NULL) {
+convert_to_df <- function(object, prob = 0.95, pars = NULL, regex_pars = NULL,
+                          mode = NA, ...) {
   res <-
     data.frame(
       par = row.names(object),
       lo = object[, 1],
       hi = object[, 2],
+      mode = mode,
       prob = prob
     )
+  if (all(is.na(res$mode))) res[["mode"]] <- NULL
   row.names(res) <- NULL
   if (!is.null(pars) && !is.null(regex_pars)) {
     return(res %>% filter(par %in% pars | grepl(regex_pars, par)))

@@ -22,6 +22,8 @@ hdi_from_grid(object, pars = NULL, prob = 0.95,
 \item{pars}{a vector of parameter names}
 
 \item{regex_pars}{a regular expression for selecting parameter names}
+
+\item{...}{additional arguments (ignored for now)}
 }
 \value{
 a data frame with 1 row per paramter and variables
