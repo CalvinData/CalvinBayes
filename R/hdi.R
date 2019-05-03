@@ -49,21 +49,21 @@ hdi <- function(object, prob = 0.95, pars = NULL, regex_pars, ...) {
 hdi.default <-
   function(object, prob = 0.95, pars = NULL, regex_pars = NULL, ...) {
     res <- coda::HPDinterval(coda::as.mcmc(object), prob = prob)
-    map <- coda::HPDinterval(coda::as.mcmc(object), prob = 0.001)
-    mode <- (map$lo + map$hi) / 2
+    map <- coda::HPDinterval(coda::as.mcmc(object), prob = 0.005)
 
     if (is.list(res)) {
       for (i in 1:length(res)) {
+        mode <- (map[[i]]$lo + map[[i]]$hi) / 2
         res[[i]] <-
           convert_to_df(res[[i]], pars = pars, regex_pars = regex_pars,
-                        mode = mode) %>%
+                        map = map) %>%
           mutate(chain = i)
       }
       bind_rows(res) %>%
         arrange(par, chain)
     } else {
       convert_to_df(res, pars = pars, regex_pars = regex_pars, prob = prob,
-                    mode = mode)
+                    map = map)
     }
   }
 
@@ -87,13 +87,13 @@ hdi.data.frame <-
   }
 
 convert_to_df <- function(object, prob = 0.95, pars = NULL, regex_pars = NULL,
-                          mode = NA, ...) {
+                          map = NA, ...) {
   res <-
     data.frame(
       par = row.names(object),
       lo = object[, 1],
       hi = object[, 2],
-      mode = mode,
+      mode = (map[, 1] + map[,2]) / 2,  # average of lower and upper for narrow HDI
       prob = prob
     )
   if (all(is.na(res$mode))) res[["mode"]] <- NULL
