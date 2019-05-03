@@ -50,18 +50,20 @@ hdi.default <-
   function(object, prob = 0.95, pars = NULL, regex_pars = NULL, ...) {
     res <- coda::HPDinterval(coda::as.mcmc(object), prob = prob)
     map <- coda::HPDinterval(coda::as.mcmc(object), prob = 0.001)
+    mode <- (map$lo + map$hi) / 2
 
     if (is.list(res)) {
       for (i in 1:length(res)) {
         res[[i]] <-
           convert_to_df(res[[i]], pars = pars, regex_pars = regex_pars,
-                        mode = (map$lo + map$hi) / 2) %>%
+                        mode = mode) %>%
           mutate(chain = i)
       }
       bind_rows(res) %>%
         arrange(par, chain)
     } else {
-      convert_to_df(res, pars = pars, regex_pars = regex_pars, prob = prob)
+      convert_to_df(res, pars = pars, regex_pars = regex_pars, prob = prob,
+                    mode = mode)
     }
   }
 

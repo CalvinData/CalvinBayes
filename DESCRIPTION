@@ -1,7 +1,7 @@
 Package: CalvinBayes
 Type: Package
 Title: Support for Computational Bayesian Analysis Courses
-Version: 0.1.0.9008
+Version: 0.1.0.9009
 Authors@R: 
     person(given = "Randall",
            family = "Pruim",
