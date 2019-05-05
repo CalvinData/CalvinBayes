@@ -53,7 +53,6 @@ hdi.default <-
 
     if (is.list(res)) {
       for (i in 1:length(res)) {
-        mode <- (map[[i]]$lo + map[[i]]$hi) / 2
         res[[i]] <-
           convert_to_df(res[[i]], pars = pars, regex_pars = regex_pars,
                         map = map) %>%
