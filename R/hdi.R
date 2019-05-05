@@ -87,15 +87,27 @@ hdi.data.frame <-
 
 convert_to_df <- function(object, prob = 0.95, pars = NULL, regex_pars = NULL,
                           map = NA, ...) {
-  res <-
-    data.frame(
-      par = row.names(object),
-      lo = object[, 1],
-      hi = object[, 2],
-      mode = (map[, 1] + map[,2]) / 2,  # average of lower and upper for narrow HDI
-      prob = prob
-    )
-  if (all(is.na(res$mode))) res[["mode"]] <- NULL
+  if (is.matrix(map)) {
+    res <-
+      data.frame(
+        par = row.names(object),
+        lo = object[, 1],
+        hi = object[, 2],
+        mode = (map[, 1] + map[,2]) / 2,  # average of lower and upper for narrow HDI
+        prob = prob
+      )
+  } else {
+    res <-
+      data.frame(
+        par = row.names(object),
+        lo = object[, 1],
+        hi = object[, 2],
+        prob = prob
+      )
+  }
+  if ("mode" %in% names(res) && all(is.na(res$mode))) {
+    res[["mode"]] <- NULL
+  }
   row.names(res) <- NULL
   if (!is.null(pars) && !is.null(regex_pars)) {
     return(res %>% filter(par %in% pars | grepl(regex_pars, par)))
