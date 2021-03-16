@@ -18,6 +18,7 @@ dagitty("dag{}")
 # our favorite suite of packages
 library(ggformula)      # formula interface to ggplot2
 library(R2jags)         # use JAGS from R
+
 library(rstan)          # use Stan from R
 library(rethinking)     # Statistical Rethinking
 library(bayesplot)      # plots related to Bayesian data analysis
@@ -33,6 +34,12 @@ library(purrr)
 
 
 # Some customization.  You can alter or delete as desired (if you know what you are doing).
+
+# rstan configuration -- as recommended by rstan
+  # use as many cores as are available
+  options(mc.cores = parallel::detectCores())
+  # To avoid recompilation of unchanged Stan programs, we recommend calling
+  rstan_options(auto_write = TRUE)
 
 # this sets the black/white theme for plots.
 # you can change the base_size to control the size of the text elements in the plot
