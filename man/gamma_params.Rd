@@ -4,13 +4,23 @@
 \alias{gamma_params}
 \title{Compute parameters of a gamma distribution}
 \usage{
-gamma_params(shape = NULL, rate = NULL, scale = NULL, mean = NULL,
-  sd = NULL, mode = NULL, plot = FALSE, ...)
+gamma_params(
+  shape = NULL,
+  rate = NULL,
+  scale = NULL,
+  mean = NULL,
+  sd = NULL,
+  mode = NULL,
+  plot = FALSE,
+  ...
+)
 }
 \arguments{
-\item{shape, }{shape parameter}
+\item{shape}{shape parameter}
 
-\item{rate, }{rateparamter}
+\item{rate}{rate paramter}
+
+\item{scale}{scale parameter}
 
 \item{mean}{mean of gamma distribution}
 
@@ -23,8 +33,6 @@ should be displayed.}
 
 \item{...}{additional arguments passed to \code{\link[ggformula:gf_dist]{ggformula::gf_dist()}} to
 modify the plot produced if \code{plot == TRUE}.}
-
-\item{concentration, k}{concentration of gamma distribution}
 }
 \description{
 Given two parameters which characterize a gamma distribution,

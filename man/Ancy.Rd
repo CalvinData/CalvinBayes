@@ -4,12 +4,14 @@
 \name{Ancy}
 \alias{Ancy}
 \title{Plant growth experiment}
-\format{A data frame with 3 variables:
+\format{
+A data frame with 3 variables:
 \itemize{
 \item \code{height}: height in cm after 14 days
 \item \code{group}: \code{"Ancy"} or \code{"Control"}
 \item \code{group_ind}: 1 for the control group and 2 for the Ancy group.
-}}
+}
+}
 \usage{
 Ancy
 }

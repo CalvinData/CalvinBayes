@@ -44,6 +44,12 @@
 #------------------------------------------------------------------------------
 # Functions for computing limits of HDI's:
 
+
+#' @importFrom graphics abline hist layout lines matplot mtext par plot.new points text
+#' @importFrom stats acf dbeta dbinom density dgamma dnorm dunif lag median optimize quantile rnorm rt runif sd setNames
+#' @importFrom utils head tail
+#'
+
 #' @export
 HDIofMCMC <- function(sampleVec, credMass=0.95) {
   # Computes highest density interval from a sample of representative values,
@@ -172,6 +178,7 @@ DbdaDensPlot = function( codaObject , parName=varnames(codaObject)[1] , plColors
 }
 
 #' @export
+#' @importFrom coda gelman.plot traceplot
 diagMCMC = function( codaObject , parName=varnames(codaObject)[1] ,
                      saveName=NULL , saveType="jpg" ) {
   DBDAplColors = c("skyblue","black","royalblue","steelblue")
@@ -180,7 +187,6 @@ diagMCMC = function( codaObject , parName=varnames(codaObject)[1] ,
        cex.lab=1.5 )
   layout(matrix(1:4,nrow=2))
   # traceplot and gelman.plot are from CODA package:
-  require(coda)
   coda::traceplot( codaObject[,c(parName)] , main="" , ylab="Param. Value" ,
                    col=DBDAplColors )
   tryVal = try(
@@ -214,11 +220,7 @@ diagStanFit = function( stanFit , parName ,
   openGraph(height=5,width=7)
   par( mar=0.5+c(3,4,1,0) , oma=0.1+c(0,0,2,0) , mgp=c(2.25,0.7,0) , cex.lab=1.5 )
   layout(matrix(1:4,nrow=2))
-  # traceplot is from rstan package
-  require(rstan)
   traceplot(stanFit,pars=parName,nrow=1,ncol=1)#,main="",ylab="Param. Value",col=DBDAplColors)
-  # gelman.plot are from CODA package:
-  require(coda)
   tryVal = try(
     coda::gelman.plot( codaObject[,c(parName)] , main="" , auto.layout=FALSE ,
                        col=DBDAplColors )

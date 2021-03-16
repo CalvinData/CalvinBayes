@@ -5,18 +5,29 @@
 \alias{metro_norm}
 \title{Metropolis algorithm}
 \usage{
-metro_bern(x, n, size = 0.01, start = 0.5, num_steps = 10000,
-  prior = dunif, ...)
+metro_bern(
+  x,
+  n,
+  step_size = 0.01,
+  start = 0.5,
+  num_steps = 10000,
+  prior = dunif,
+  ...
+)
 
-metro_norm(y, num_steps = 1e+05, size = 1, start = list(mu = 0,
-  log_sigma = 0))
+metro_norm(
+  y,
+  num_steps = 1e+05,
+  step_size = 1,
+  start = list(mu = 0, log_sigma = 0)
+)
 }
 \arguments{
 \item{x}{number of success in data}
 
 \item{n}{number of failures in data}
 
-\item{size}{sd of (normal) jump distribution(s)}
+\item{step_size}{sd of (normal) jump distribution(s)}
 
 \item{start}{starting value(s) for MCMC}
 
@@ -25,13 +36,15 @@ metro_norm(y, num_steps = 1e+05, size = 1, start = list(mu = 0,
 \item{prior}{a function describing the prior}
 
 \item{...}{additional arguments for the prior}
+
+\item{y}{vecctor of numeric response values}
 }
 \description{
 Simple Metropolis algorithm implementations for simple models.
 }
 \examples{
 Metro <-
-  metro_bern(10, 30, size = 0.1, prior = dbeta, shape1 = 4, shape2 = 4)
+  metro_bern(10, 30, step_size = 0.1, prior = dbeta, shape1 = 4, shape2 = 4)
 # posterior density
 Metro \%>\%
   gf_dens(~ theta) \%>\%

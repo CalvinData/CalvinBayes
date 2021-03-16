@@ -25,7 +25,9 @@ hdi <- function(object, prob = 0.95, pars = NULL, regex_pars, ...) {
 #'   expand.grid(x = seq(0, 1, length.out = 201)) %>%
 #'     mutate(posterior = dbeta(x, 30, 12))
 #' hdi_from_grid(Grid, "x", prob = 0.9)
-#' hdi(mosaic::resample(Grid, prob = Grid$posterior, size = 10000)$x, prob = 0.9)
+#' Grid %>% dplyr::slice_sample(n = 1E4, weight_by = posterior, replace = TRUE) %>%
+#'   pull(x) %>%
+#'   hdi(prob = 0.9)
 #' x <- rnorm(25, 3, 2)  # some random data
 #' Grid <-
 #'   expand.grid(
@@ -35,11 +37,11 @@ hdi <- function(object, prob = 0.95, pars = NULL, regex_pars, ...) {
 #'     mutate(
 #'       prior = 1,
 #'       loglik =
-#'         purrr::map2_dbl(mean, sd, function(a, b) sum(dnorm(x, a, b, log = TRUE)), x = x),
+#'         purrr::map2_dbl(mean, sd, ~ sum(dnorm(x, .x, .y, log = TRUE)), x = x),
 #'       likelihood = exp(loglik),
 #'       posterior = prior * likelihood
 #'     )
-#'  hdi_from_grid(Grid, params = c("mean", "sd"))
+#'  hdi_from_grid(Grid, pars = c("mean", "sd"))
 #'
 
 #' @rdname hdi

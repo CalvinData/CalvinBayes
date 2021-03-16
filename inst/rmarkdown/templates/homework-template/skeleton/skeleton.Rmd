@@ -10,16 +10,27 @@ output:
 ---
 
 ```{r, setup, include=FALSE}
+
+# load dagitty, and hack to make it work (we hope)
+library(dagitty)
+dagitty("dag{}")
+
 # our favorite suite of packages
 library(ggformula)      # formula interface to ggplot2
-library(dplyr)          # data wrangling
-library(tidyr)          # more data wrangling
 library(R2jags)         # use JAGS from R
 library(rstan)          # use Stan from R
+library(rethinking)     # Statistical Rethinking
 library(bayesplot)      # plots related to Bayesian data analysis
 library(coda)           # work with MCMC samples
-library(purrr)          # functional programming
 library(CalvinBayes)    # load after coda and bayesplot
+library(brms)           
+library(ggmcmc)
+
+# part of tidyverse for data wrangling
+library(dplyr)
+library(tidyr)
+library(purrr)
+
 
 # Some customization.  You can alter or delete as desired (if you know what you are doing).
 
@@ -28,6 +39,7 @@ library(CalvinBayes)    # load after coda and bayesplot
 theme_set(theme_bw(base_size = 8)) 
 
 knitr::opts_chunk$set(
+  error = TRUE,     # display error message and keep going if there is an error
   tidy = FALSE,     # display code as typed
   size = "small",   # slightly smaller font for code
   fig.width = 3.0,  # width of figures (can be overridden in individual chunks)
@@ -38,6 +50,7 @@ knitr::opts_chunk$set(
 
 
 ## Problem ?.?
+
 
 An example with a couple of plots.  Notice that they appear after all
 of the code and are small enough to fit side-by-side.
@@ -52,4 +65,12 @@ Here's a wider plot using `fig.width = 6`:
 ```{r, fig.width = 6}
 gf_dhistogram( ~ age, data = mosaicData::HELPrct, binwidth = 1) %>%
   gf_dens()
+```
+
+Looks like we have a work-around for daggity:
+
+```{r}
+dag <- dagitty("dag{A <- B -> C}")
+drawdag(dag)
+impliedConditionalIndependencies(dag)
 ```

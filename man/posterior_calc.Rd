@@ -8,11 +8,23 @@
 \usage{
 posterior_calc(object, ...)
 
-\method{posterior_calc}{default}(object, formula, data = NULL,
-  draws = NULL, data.frame = FALSE, ...)
+\method{posterior_calc}{default}(
+  object,
+  formula,
+  data = NULL,
+  draws = NULL,
+  data.frame = FALSE,
+  ...
+)
 
-\method{posterior_calc}{data.frame}(object, formula, data = NULL,
-  draws = NULL, data.frame = FALSE, ...)
+\method{posterior_calc}{data.frame}(
+  object,
+  formula,
+  data = NULL,
+  draws = NULL,
+  data.frame = FALSE,
+  ...
+)
 }
 \arguments{
 \item{object}{An object from which posterior calculations are made.}

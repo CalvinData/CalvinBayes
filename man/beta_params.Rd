@@ -4,9 +4,19 @@
 \alias{beta_params}
 \title{Compute parameters of a beta distribution}
 \usage{
-beta_params(shape1 = NULL, shape2 = NULL, mean = NULL, sd = NULL,
-  concentration = NULL, mode = NULL, a = shape1, b = shape2,
-  k = concentration, plot = FALSE, ...)
+beta_params(
+  shape1 = NULL,
+  shape2 = NULL,
+  mean = NULL,
+  sd = NULL,
+  concentration = NULL,
+  mode = NULL,
+  a = shape1,
+  b = shape2,
+  k = concentration,
+  plot = FALSE,
+  ...
+)
 }
 \arguments{
 \item{shape1, a}{first shape parameter}

@@ -11,14 +11,13 @@
 #' @param parName an alias for pars
 #'
 #' @rdname diag_mcmc
+#' @importFrom coda traceplot gelman.plot
 #' @export
 diagMCMC <- function(object, parName = varnames(object)[1]) {
   DBDAplColors = c("skyblue", "black", "royalblue", "steelblue")
   par(mar = 0.5+c(3, 4, 1, 0), oma = 0.1 + c(0, 0, 2, 0), mgp = c(2.25, 0.7, 0),
        cex.lab = 1.5)
   layout(matrix(1:4, nrow = 2))
-  # traceplot and gelman.plot are from CODA package:
-  require(coda)
   coda::traceplot(object[, c(parName)], main = "", ylab = "Param. Value",
                    col = DBDAplColors)
   tryVal = try(

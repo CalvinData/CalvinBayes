@@ -4,20 +4,20 @@
 #' compute the remaining parameters in the following set
 #' `shape`, `rate`, `scale`, `mean`, `mode`, `sd`.
 #'
-#' @param shape, shape parameter
-#' @param rate, rateparamter
+#' @param shape shape parameter
+#' @param scale scale parameter
+#' @param rate rate paramter
 #' @param mean mean of gamma distribution
 #' @param mode mode of gamma distribution
-#' @param concentration,k concentration of gamma distribution
 #' @param sd standard deviation of gamma distribution
 #' @param plot logical indicating whether a plot of the distribution
 #'   should be displayed.
 #' @param ... additional arguments passed to [ggformula::gf_dist()] to
 #'   modify the plot produced if `plot == TRUE`.
 #'
-#' @importFrom ggformula gf_segment gf_dist gf_labs
-#' @importFrom ggplot2 geom_segment labs
-#' @importFrom dplyr tibble select
+#' @importFrom ggformula gf_segment gf_dist gf_labs gf_refine gf_function
+#' @importFrom ggplot2 geom_segment labs aes
+#' @importFrom dplyr tibble select %>% arrange as_tibble bind_rows ungroup as_tibble mutate bind_rows bind_cols
 #' @export
 #' @examples
 #' gamma_params(10, 5)

@@ -6,7 +6,7 @@
 #' @rdname metropolis
 #' @param x number of success in data
 #' @param n number of failures in data
-#' @param size sd of (normal) jump distribution(s)
+#' @param step_size sd of (normal) jump distribution(s)
 #' @param start starting value(s) for MCMC
 #' @param num_steps how long to run MCMC
 #' @param prior a function describing the prior
@@ -14,7 +14,7 @@
 #'
 #' @examples
 #' Metro <-
-#'   metro_bern(10, 30, size = 0.1, prior = dbeta, shape1 = 4, shape2 = 4)
+#'   metro_bern(10, 30, step_size = 0.1, prior = dbeta, shape1 = 4, shape2 = 4)
 #' # posterior density
 #' Metro %>%
 #'   gf_dens(~ theta) %>%
@@ -26,12 +26,12 @@
 #' @export
 
 metro_bern <- function(
-  x, n,            # x = successes, n = trials
-  size = 0.01,     # sd of jump distribution
-  start = 0.5,     # value of theta to start at
-  num_steps = 1e4, # number of steps to run the algorithm
-  prior = dunif,   # function describing prior
-  ...              # additional arguments for prior
+  x, n,              # x = successes, n = trials
+  step_size = 0.01,  # sd of jump distribution
+  start = 0.5,       # value of theta to start at
+  num_steps = 1e4,   # number of steps to run the algorithm
+  prior = dunif,     # function describing prior
+  ...                # additional arguments for prior
 ) {
 
   theta             <- rep(NA, num_steps)  # trick to pre-alocate memory
@@ -41,7 +41,7 @@ metro_bern <- function(
 
   for (i in 1:(num_steps-1)) {
     # head to new "island"
-    proposed_theta[i + 1] <- rnorm(1, theta[i], size)
+    proposed_theta[i + 1] <- rnorm(1, theta[i], step_size)
 
     if (proposed_theta[i + 1] <= 0 ||
         proposed_theta[i + 1] >= 1) {
@@ -71,7 +71,7 @@ metro_bern <- function(
     step = 1:num_steps,
     theta = theta,
     proposed_theta = proposed_theta,
-    move = move, size = size
+    move = move, step_size = step_size
   )
 }
 
@@ -80,16 +80,17 @@ metro_bern <- function(
 #' metro_norm(rnorm(25, 10, 1), start = list(mu = 5, log_sigma = log(5))) %>%
 #'   gf_density( ~ mu)
 #'
+#' @param y vecctor of numeric response values
 #' @export
 #'
 metro_norm <- function(
   y,
   num_steps = 1e5,
-  size = 1,         # sd's of jump distributions
+  step_size = 1,         # sd's of jump distributions
   start = list(mu = 0, log_sigma = 0)
 ) {
 
-  size <- rep(size, 2)[1:2]        # make sure exactly two values
+  step_size <- rep(step_size, 2)[1:2]        # make sure exactly two values
   mu        <- rep(NA, num_steps)  # trick to pre-alocate memory
   log_sigma <- rep(NA, num_steps)  # trick to pre-alocate memory
   move      <- rep(NA, num_steps)  # trick to pre-alocate memory
@@ -99,8 +100,8 @@ metro_norm <- function(
 
   for (i in 1:(num_steps - 1)) {
     # head to new "island"
-    mu[i + 1]        <- rnorm(1, mu[i], size[1])
-    log_sigma[i + 1] <- rnorm(1, log_sigma[i], size[2])
+    mu[i + 1]        <- rnorm(1, mu[i], step_size[1])
+    log_sigma[i + 1] <- rnorm(1, log_sigma[i], step_size[2])
     move[i + 1] <- TRUE
 
     log_post_current <-
@@ -126,6 +127,6 @@ metro_norm <- function(
     mu = mu,
     log_sigma = log_sigma,
     move = move,
-    size = paste(size, collapse = ", ")
+    step_size = paste(step_size, collapse = ", ")
   )
 }

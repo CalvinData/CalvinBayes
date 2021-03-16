@@ -41,7 +41,7 @@ beta_params <-
         stop("Both shape parameters must be positive.")
       }
       Res <-
-        data_frame(
+        tibble(
           shape1 = a,
           shape2 = b,
           mean = a / (a + b),
@@ -54,7 +54,7 @@ beta_params <-
     if (is.null(Res) && !is.null(mode) && ! is.null(k)) {
       if ( mode <= 0 | mode >= 1) stop("must have 0 < mode < 1")
       Res <-
-        data_frame(
+        tibble(
           shape1 =       mode * (k - 2) + 1,
           shape2 = (1 - mode) * (k - 2) + 1,
           mean = shape1 / (shape1 + shape2),
@@ -66,7 +66,7 @@ beta_params <-
 
     if (is.null(Res) && !is.null(mean) && ! is.null(k)) {
       if ( mean <= 0 || mean >= 1) stop("must have 0 < mean < 1")
-      Res <-  data_frame(
+      Res <-  tibble(
           shape1 =      mean  * k,
           shape2 = (1 - mean) * k,
           mean = shape1 / (shape1 + shape2),
@@ -80,7 +80,7 @@ beta_params <-
       if ( mean <= 0 || mean >= 1) stop("must have 0 < mean < 1")
       k <- mean * (1 - mean) / sd^2 - 1
       Res <-
-        data_frame(
+        tibble(
           shape1 =      mean  * k,
           shape2 = (1 - mean) * k,
           mean = shape1 / (shape1 + shape2),
@@ -102,7 +102,7 @@ beta_params <-
     #   }
     #   soln <- optim(c(2, 2), fn)$par
     #   Res <-
-    #     data_frame(
+    #     tibble(
     #       shape1 = soln[1],
     #       shape2 = soln[2],
     #       mean = shape1 / (shape1 + shape2),

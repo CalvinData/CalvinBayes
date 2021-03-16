@@ -5,23 +5,57 @@
 \alias{plot_post}
 \title{Plot posterior samples}
 \usage{
-plotPost(samples, center = c("mode", "median", "mean"),
-  cenTend = center, comparison_value = NULL,
-  compVal = comparison_value, ROPE = NULL, hdi_prob = 0.95,
-  credMass = hdi_prob, hdi_text_place = 0.7,
-  HDItextPlace = hdi_text_place, quietly = FALSE,
-  xlab = "Param. Val.", xlim = NULL, yaxt = "n", ylab = "",
-  main = "", cex = 1.4, cex.lab = 1.5, col = "skyblue",
-  border = "white", showCurve = FALSE, breaks = NULL, ...)
+plotPost(
+  samples,
+  center = c("mode", "median", "mean"),
+  cenTend = center,
+  comparison_value = NULL,
+  compVal = comparison_value,
+  ROPE = NULL,
+  hdi_prob = 0.95,
+  credMass = hdi_prob,
+  hdi_text_place = 0.7,
+  HDItextPlace = hdi_text_place,
+  quietly = FALSE,
+  xlab = "Param. Val.",
+  xlim = NULL,
+  yaxt = "n",
+  ylab = "",
+  main = "",
+  cex = 1.4,
+  cex.lab = 1.5,
+  col = "skyblue",
+  border = "white",
+  showCurve = FALSE,
+  breaks = NULL,
+  ...
+)
 
-plot_post(samples, center = c("mode", "median", "mean"),
-  cenTend = center, comparison_value = NULL,
-  compVal = comparison_value, ROPE = NULL, hdi_prob = 0.95,
-  credMass = hdi_prob, hdi_text_place = 0.7,
-  HDItextPlace = hdi_text_place, quietly = FALSE,
-  xlab = "Param. Val.", xlim = NULL, yaxt = "n", ylab = "",
-  main = "", cex = 1.4, cex.lab = 1.5, col = "skyblue",
-  border = "white", showCurve = FALSE, breaks = NULL, ...)
+plot_post(
+  samples,
+  center = c("mode", "median", "mean"),
+  cenTend = center,
+  comparison_value = NULL,
+  compVal = comparison_value,
+  ROPE = NULL,
+  hdi_prob = 0.95,
+  credMass = hdi_prob,
+  hdi_text_place = 0.7,
+  HDItextPlace = hdi_text_place,
+  quietly = FALSE,
+  xlab = "Param. Val.",
+  xlim = NULL,
+  yaxt = "n",
+  ylab = "",
+  main = "",
+  cex = 1.4,
+  cex.lab = 1.5,
+  col = "skyblue",
+  border = "white",
+  showCurve = FALSE,
+  breaks = NULL,
+  ...
+)
 }
 \arguments{
 \item{samples}{a vector of (posterior) sampled values}

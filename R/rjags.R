@@ -41,6 +41,10 @@ summary.rjags <- function (
   structure(res, class = "summary.rjags")
 }
 
+#' Print summary.rjags objects
+#'
+#' Print summary.rjags objects
+#'
 #' @rdname print.rjags
 #' @param x a summary.rjags objejct
 #' @export

@@ -48,6 +48,7 @@ posterior.rjags <- function(object, ...) {
 }
 
 #' @rdname posterior
+#' @importFrom rstan extract
 #' @export
 #'
 posterior.stanfit <- function(object, ...) {

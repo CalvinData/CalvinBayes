@@ -4,8 +4,7 @@
 \alias{summary.rjags}
 \title{Summarize an rjags object}
 \usage{
-\method{summary}{rjags}(object, digits = 3, intervals = c(0.025, 0.25,
-  0.5, 0.75, 0.975), ...)
+\method{summary}{rjags}(object, digits = 3, intervals = c(0.025, 0.25, 0.5, 0.75, 0.975), ...)
 }
 \arguments{
 \item{object}{and rjags object}

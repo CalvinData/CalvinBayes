@@ -28,7 +28,7 @@
 #' @param ... additional arguments passed to the geom.
 #'
 #' @importFrom dplyr tibble filter
-#' @importFrom ggplot2 labs facet_wrap
+#' @importFrom ggplot2 labs facet_wrap geom_col geom_area scale_color_manual
 #' @importFrom purrr map_dbl
 #' @export
 #' @examples
@@ -54,6 +54,8 @@
 #' BernGrid("HHHHHHHHHHHH", alpha = 0.9)
 #' BernGrid("HHHHHHHHHHHH", alpha = 0.9, steps = TRUE)
 #' BernGrid(rbinom(12, 1, 0.25), alpha = 0.9, steps = TRUE)
+#'
+#' @importFrom stringr str_split
 
 BernGrid <-
   function(data = "HHTT",

@@ -5,15 +5,31 @@
 \alias{bern_grid}
 \title{Bayesian inference for a proportion via grid method}
 \usage{
-BernGrid(data = "HHTT", p = seq(0, 1, length.out = resolution + 1),
-  prior = 1, results = c("plot", "data"), steps = FALSE, geom = if
-  (length(p) <= 20) geom_col else geom_area, alpha = 0.5,
-  resolution = 200, filter = TRUE, ...)
+BernGrid(
+  data = "HHTT",
+  p = seq(0, 1, length.out = resolution + 1),
+  prior = 1,
+  results = c("plot", "data"),
+  steps = FALSE,
+  geom = if (length(p) <= 20) geom_col else geom_area,
+  alpha = 0.5,
+  resolution = 200,
+  filter = TRUE,
+  ...
+)
 
-bern_grid(data = "HHTT", p = seq(0, 1, length.out = resolution + 1),
-  prior = 1, results = c("plot", "data"), steps = FALSE, geom = if
-  (length(p) <= 20) geom_col else geom_area, alpha = 0.5,
-  resolution = 200, filter = TRUE, ...)
+bern_grid(
+  data = "HHTT",
+  p = seq(0, 1, length.out = resolution + 1),
+  prior = 1,
+  results = c("plot", "data"),
+  steps = FALSE,
+  geom = if (length(p) <= 20) geom_col else geom_area,
+  alpha = 0.5,
+  resolution = 200,
+  filter = TRUE,
+  ...
+)
 }
 \arguments{
 \item{data}{a vector of 0's and 1's or a character string with two characters representing
@@ -23,8 +39,8 @@ success/failure or head/tails from the bernoulli experiment.}
 
 \item{prior}{a vector of prior values at each probability in \code{p},
 a constant, a function, or a one-sided formula.
-If a function or formula, \code{\link[purrr:map_dbl]{purrr::map_dbl()}} is used to
-apply to each value of \code{p}.  (See help for \code{\link[purrr:map_dbl]{purrr::map_dbl()}}
+If a function or formula, \code{\link[purrr:map]{purrr::map_dbl()}} is used to
+apply to each value of \code{p}.  (See help for \code{\link[purrr:map]{purrr::map_dbl()}}
 for details regarding how this works.)}
 
 \item{results}{either \code{"plot"} or \code{"data"} to indicate what information is returned.}
@@ -33,10 +49,10 @@ for details regarding how this works.)}
 for all the data at once.}
 
 \item{geom}{a geom used for plotting.  Good choices include
-\code{\link[ggplot2:geom_line]{ggplot2::geom_line()}},
-\code{\link[ggplot2:geom_col]{ggplot2::geom_col()}},
+\code{\link[ggplot2:geom_path]{ggplot2::geom_line()}},
+\code{\link[ggplot2:geom_bar]{ggplot2::geom_col()}},
 \code{\link[ggplot2:geom_point]{ggplot2::geom_point()}},
-\code{\link[ggplot2:geom_area]{ggplot2::geom_area()}}}
+\code{\link[ggplot2:geom_ribbon]{ggplot2::geom_area()}}}
 
 \item{alpha}{opacity used for the plot}
 
@@ -76,4 +92,5 @@ BernGrid("TTTTHHHHHHHH", alpha = 0.9, steps = TRUE, filter = n == 10)
 BernGrid("HHHHHHHHHHHH", alpha = 0.9)
 BernGrid("HHHHHHHHHHHH", alpha = 0.9, steps = TRUE)
 BernGrid(rbinom(12, 1, 0.25), alpha = 0.9, steps = TRUE)
+
 }
