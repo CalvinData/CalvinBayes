@@ -13,6 +13,11 @@ stanfit <- function(object, ...) {
 }
 
 #' @export
+stanfit.ulam <- function(object, ...) {
+  object@stanfit
+}
+
+#' @export
 stanfit.stanfit <- function(object, ...) {
   object
 }
