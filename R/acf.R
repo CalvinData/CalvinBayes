@@ -10,6 +10,7 @@
 #' @param color color of reference lines (use "transparent" to hide)
 #' @param plot A logical indicating whether the original base plot graphic should be displayed.
 #'   Generally this should be left to its default value of `FALSE`.
+#' @param data a data frame (or other object) in which to evaluate `x`.
 #'
 #' @seealso `stats::acf()`
 #'

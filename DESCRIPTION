@@ -1,7 +1,7 @@
 Package: CalvinBayes
 Type: Package
 Title: Support for Computational Bayesian Analysis Courses
-Version: 0.2.3
+Version: 0.2.4
 Authors@R: 
     person(given = "Randall",
            family = "Pruim",
@@ -16,12 +16,13 @@ Depends:
     ggformula,
     bayesplot
 Imports:
-    ggplot2,
     rstan,
     coda,
     brms,
     purrr,
-    stringr
+    stringr,
+    ggdag,
+    broom
 Suggests:
     R2jags,
     testthat

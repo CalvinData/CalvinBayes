@@ -49,6 +49,8 @@ Generally this should be left to its default value of \code{FALSE}.}
 \item{fill}{fill color for ACF plot}
 
 \item{alpha}{opacity of fill for ACF plot}
+
+\item{data}{a data frame (or other object) in which to evaluate \code{x}.}
 }
 \description{
 A wrapper around \code{stats::acf()} to make easy ACF plots in the ggplot2 system.
