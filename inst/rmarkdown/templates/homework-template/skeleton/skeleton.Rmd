@@ -17,16 +17,16 @@ library(dagitty)
 dagitty("dag{}")
 
 # our favorite suite of packages
+library(brms)           
 library(ggformula)      # formula interface to ggplot2
 library(R2jags)         # use JAGS from R
 
 library(rstan)          # use Stan from R
-library(rethinking)     # Statistical Rethinking
-library(bayesplot)      # plots related to Bayesian data analysis
-library(coda)           # work with MCMC samples
-library(CalvinBayes)    # load after coda and bayesplot
-library(brms)           
 library(ggmcmc)
+library(coda)           # work with MCMC samples
+library(bayesplot)      # plots related to Bayesian data analysis
+library(rethinking)     # Statistical Rethinking
+library(CalvinBayes)    # load after coda and bayesplot
 
 # part of tidyverse for data wrangling
 library(dplyr)
